@@ -102,9 +102,21 @@ function loadAdminArticles(type, contentDiv) {
 			//alert("Successfully retrieved " + results.length + " noticias.");
 			// Do something with the returned Parse.Object values
 			for (var i = 0; i < results.length; i++) { 
-			  var object = results[i];
-			  document.getElementById(contentDiv).innerHTML = document.getElementById(contentDiv).innerHTML + '<div class="card"><div class="item item-divider">'+ object.get('title') + '</div></div>';
-			  }
+				var object = results[i];
+				//document.getElementById(contentDiv).innerHTML = document.getElementById(contentDiv).innerHTML + '<div class="card"><div class="item item-divider">'+ object.get('title') + '</div></div>';
+				var favorito;
+				if (object.get('priority')){
+					favorito = '<a class="tab-item" href="#"><i class="icon ion-android-star"></i>Favorito</a>';
+				}
+				else{
+					favorito = '<a class="tab-item" href="#"><i class="icon ion-android-star-outline"></i>Favorito</a>';
+				}
+				var difundir = '<a class="tab-item" href="#"><i class="icon ion-android-notifications"></i> Difundir </a>';
+				var editar = '<a class="tab-item" href="#"><i class="icon ion-edit"></i> Editar</a>';
+				var eliminar = '<a class="tab-item" onclick="return deleteObject('+ object.id +');"><i class="icon ion-android-delete" ></i> Eliminar</a>';
+				console.log(object.id);
+				document.getElementById(contentDiv).innerHTML = document.getElementById(contentDiv).innerHTML + '<div class="card"> <div class="item item-text-wrap">' + object.get('title') + '<div class="item tabs tabs-secondary tabs-icon-left">' + favorito + difundir + editar + eliminar + '</div></div></div>';                                                                                                                                                                                                                                             
+				}
 		  },
 		  error: function(error) {
 			//alert("Error: " + error.code + " " + error.message);
@@ -124,18 +136,46 @@ function toPage(site) {
 	
 //les pone una estrella al inicio para los articulos de prioridad			
 function geticon (priority) {
-		if (priority == true) //es importante
-			return '<i class="icon ion-star"></i>';
-		else //es de prioridad normal
-			return ' ';
+	Parse.initialize(appId, parseKey);
+	if (priority == true) //es importante
+		return '<i class="icon ion-star"></i>';
+	else //es de prioridad normal
+		return ' ';
 }
 
 
 //Funcion llamada para enviar a la pantalla de crearX.
 function createArticle(type){ //type can be: 'noticia', 'evento' or 'proyecto'
-	alert ("Going to: create" + type + ".html");
+	//alert ("Going to: create" + type + ".html");
+	location.href="create" + type + ".html";
 }
 
+function deleteObject(objectId){
+	console.log(objectId);
+	Parse.initialize(appId, parseKey);
+	var Evento = Parse.Object.extend("Evento");		
+	var query = new Parse.Query(Evento);
+	query.equalTo("objectId", objectId);
+	query.find({
+		  success: function(results) {
+			var object = results[0];
+			console.log(object.get('title'));
+			object.destroy({
+			  success: function(object) {
+				alert("The object was deleted from the Parse Cloud.");
+			  },
+			  error: function(object, error) {
+				alert("Error al eliminar");
+			  }
+			});
+		},
+	  error: function(error) {
+		//alert("Error: " + error.code + " " + error.message);
+		if (error.code = -1)
+			alert("Error de conexión, verifica la conexion de internet");
+	  }
+	});
+}
 
 function login() {
 	username = document.getElementById("username").value;
