@@ -16,7 +16,8 @@
 		<script language="javascript" type="text/javascript" src="js/moment.js"></script>
 		<script>
 			//window.onload = loadPublications;
-			window.onload = getDate;
+			//window.onload = getDate;
+			window.onload = editObject();
 		</script>
         <title>GTS Dashboard</title>
     </head>
@@ -33,7 +34,7 @@
 		<div class="list">
 			<div class="item item-divider bar-positive">
 				<i class="icon ion-ios-paper-outline"></i>
-				<b>Nueva Noticia</b>
+				<b>Editar Noticia</b>
 			</div>
 		</div>
 		
@@ -55,11 +56,11 @@
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Profesor Encargado</span>
-				<textarea id="author" placeholder="Autor"></textarea>
+				<textarea id="professor" placeholder="Autor"></textarea>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Tel&eacute;fono</span>
-				<textarea id="phone" placeholder="8888-8888"></textarea>
+				<textarea id="telephone" placeholder="8888-8888"></textarea>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Correo electr&oacute;nico</span>
@@ -70,7 +71,7 @@
 				<textarea id="link" placeholder="www.example.com"></textarea>
 			</label>
 			<div class="button-bar bar-positive">
-				  <a class="button">Crear</a>
+				  <a class="button">Editar</a>
 				  <a class="button" onclick="toPage('admin_index.html')">Cancelar</a>
 			</div>
 		</div>
