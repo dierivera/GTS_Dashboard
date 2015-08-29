@@ -350,7 +350,7 @@ function createArticle(type){
 			articulo.set("date",date);
 		}
 		
-		var confirmation = confirm("Seguro que desea actualizar?"); //popup con dos opciones
+		var confirmation = confirm("Seguro que desea agregar?"); //popup con dos opciones
 			if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
 				  //Guardamos el objeto en la nube 
 				articulo.save(null, {
