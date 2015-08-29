@@ -16,6 +16,7 @@
 		<script language="javascript" type="text/javascript" src="js/moment.js"></script>
 		<script>
 			//window.onload = loadPublications;
+			window.onload = getDate;
 		</script>
         <title>GTS Dashboard</title>
     </head>
@@ -31,45 +32,45 @@
 		
 		<div class="list">
 			<div class="item item-divider bar-positive">
-				<i class="icon ion-android-clipboard"></i>
+				<i class="icon ion-ios-paper-outline"></i>
 				<b>Nuevo Proyecto</b>
 			</div>
 		</div>
 		
-		<!-- EJEMPLO DE NOTICIA EDITABLE -->
+		<!-- EJEMPLO DE PROYECTO EDITABLE -->
 		<div id="noticias">
 			<div class="list">
 			  <label class="item item-input item-stacked-label">
-				<span class="input-label">Nombre del proyecto</span>
-				<input type="text" placeholder="Nuevo proyecto">
+				<span class="input-label">Titulo del Proyecto</span>
+				<textarea id="title" placeholder="Titulo de Noticia"></textarea>
 			  </label>
-			</div>			
+			</div>						
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Descripci&oacute;n breve</span>
-				<textarea placeholder="Descripci&oacute;n breve"></textarea>
+				<textarea id="brief_description" placeholder="Descripci&oacute;n breve"></textarea>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Descripci&oacute;n</span>
-				<textarea placeholder="Descripci&oacute;n"></textarea>
+				<textarea id="description" placeholder="Descripci&oacute;n"></textarea>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Profesor Encargado</span>
-				<textarea placeholder="Autor"></textarea>
+				<textarea id="author" placeholder="Autor"></textarea>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Tel&eacute;fono</span>
-				<textarea placeholder="88888888"></textarea>
+				<textarea id="phone" placeholder="8888-8888"></textarea>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Correo electr&oacute;nico</span>
-				<textarea placeholder="autor@itcr.ac.cr"></textarea>
+				<textarea id="email" placeholder="autor@itcr.ac.cr"></textarea>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Link externo (opcional)</span>
-				<textarea placeholder="www.example.com"></textarea>
+				<textarea id="link" placeholder="www.example.com"></textarea>
 			</label>
 			<div class="button-bar bar-positive">
-				  <a class="button">Crear</a>
+				  <a class="button" onclick="createArticle(3)">Crear</a>
 				  <a class="button" onclick="toPage('admin_index.html')">Cancelar</a>
 			</div>
 		</div>

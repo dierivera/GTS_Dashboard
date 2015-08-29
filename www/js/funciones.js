@@ -218,7 +218,7 @@ function deleteObject(type, i){
 
 
 //Funcion llamada para enviar a la pantalla de crearX.
-function createArticle(type){ //type can be: 'noticia', 'evento' or 'proyecto'
+function PageCreateArticle(type){ //type can be: 'noticia', 'evento' or 'proyecto'
 	//alert ("Going to: create" + type + ".html");
 	location.href="create" + type + ".html";
 }
@@ -260,10 +260,10 @@ function login() {
 		},
 		error: function(user, error) {
 			alert ("Revisa el usuario o contraseña.");
+			document.getElementById("password").value = "";	
 		}
 	});
-	document.getElementById("username").value = "";
-	document.getElementById("password").value = "";	
+	
 }
 
 
@@ -307,5 +307,58 @@ function getUrlParameter(sParam) {
 		{
 			return sParameterName[1] === undefined ? true : sParameterName[1];
 		}
+	}
+}
+
+function createArticle(type){	
+	Parse.initialize(appId, parseKey);
+	var title = document.getElementById("title").value;
+	var brief_description = document.getElementById("brief_description").value;
+	var description = document.getElementById("description").value;
+	var link = document.getElementById("link").value;
+	
+	var professor = document.getElementById("author").value;
+	var email = document.getElementById("email").value;
+	var telephone = document.getElementById("phone").value;
+	
+	//FALTAN LOS DEL EVENTO
+	
+	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
+		alert("Ingrese todos los datos");
+	}
+	else{
+		var articulo = Parse.Object.extend("Evento");
+		var noticia = new articulo();
+		 
+		noticia.set("Type",type); 
+		noticia.set("title",title);
+		noticia.set("brief_description",brief_description)
+		noticia.set("description",description);
+		noticia.set("professor",professor);
+		noticia.set("telephone",telephone);
+		noticia.set("email",email);
+		noticia.set("link",link);
+		noticia.set("priority",false);
+		noticia.set("visits",0);
+		
+		var confirmation = confirm("Seguro que desea agregar?"); //popup con dos opciones
+			if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
+				  //Guardamos el objeto en la nube 
+				noticia.save(null, {
+				success: function(noticia) {
+				// Execute any logic that should take place after the object is saved.
+				alert('Agregado con Exito');
+				location.href='admin_index.html';
+				},
+				error: function(noticia, error) {
+				// Execute any logic that should take place if the save fails.
+				// error is a Parse.Error with an error code and message.
+				alert('Error al Agregar');
+				}
+				});
+			}
+			else{
+				//Do Nothing
+			}
 	}
 }
