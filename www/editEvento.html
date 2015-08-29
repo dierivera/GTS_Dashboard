@@ -16,8 +16,8 @@
 		<script language="javascript" type="text/javascript" src="js/moment.js"></script>
 		<script>
 			//window.onload = loadPublications;
-			//window.onload = getDate;
-			window.onload = editObject(3);
+			//window.onload = getDate();
+			window.onload = editObject(2);
 		</script>
         <title>GTS Dashboard</title>
     </head>
@@ -34,16 +34,16 @@
 		<div class="list">
 			<div class="item item-divider bar-positive">
 				<i class="icon ion-ios-paper-outline"></i>
-				<b>Editar Proyecto</b>
+				<b>Nuevo Evento</b>
 			</div>
 		</div>
 		
-		<!-- EJEMPLO DE NOTICIA EDITABLE -->
+		<!-- EJEMPLO DE Evento EDITABLE -->
 		<div id="noticias">
 			<div class="list">
 			  <label class="item item-input item-stacked-label">
-				<span class="input-label">Titulo del Proyecto</span>
-				<textarea id="title" placeholder="Titulo de Noticia"></textarea>
+				<span class="input-label">Titulo del Evento</span>
+				<textarea id="title" placeholder="Titulo de Evento"></textarea>
 			  </label>
 			</div>						
 			<label class="item item-input item-stacked-label">
@@ -53,6 +53,14 @@
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Descripci&oacute;n</span>
 				<textarea id="description" placeholder="Descripci&oacute;n"></textarea>
+			</label>
+			<label class="item item-input item-stacked-label">
+				<span class="input-label">Ubicaci&oacute;n</span>
+				<button class="button icon ion-location" onclick="geoFindMe()"> Check in</button>
+			</label>
+			<label class="item item-input item-stacked-label">
+				<span class="input-label">Fecha</span>
+				<input id="date" type="date"/>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Profesor Encargado</span>
@@ -71,7 +79,7 @@
 				<textarea id="link" placeholder="www.example.com"></textarea>
 			</label>
 			<div class="button-bar bar-positive">
-				  <a class="button" onclick="updateArticle(3)">Editar</a>
+				  <a class="button" onclick="updateArticle(2)">Actualizar</a>
 				  <a class="button" onclick="toPage('admin_index.html')">Cancelar</a>
 			</div>
 		</div>

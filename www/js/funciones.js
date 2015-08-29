@@ -223,7 +223,7 @@ function PageCreateArticle(type){ //type can be: 'noticia', 'evento' or 'proyect
 	location.href="create" + type + ".html";
 }
 
-function editObject(){
+function editObject(type){
 	var i = getUrlParameter('objectId');
 	Parse.initialize(appId, parseKey);
 	var Evento = Parse.Object.extend("Evento");		
@@ -239,6 +239,18 @@ function editObject(){
 			$('#phone').val(object.get('telephone'));
 			$('#email').val(object.get('email'));
 			$('#link').val(object.get('link'));
+			if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)				
+				var date_str = object.get('date');
+				var fromDate = new Date(date_str);
+				var day = fromDate.getDate();
+				if(day < 10)
+					day = "0"+day;
+				var month = fromDate.getMonth() + 1; //Months are zero based
+				if(month < 10)
+					month = "0"+month;
+				var year = fromDate.getFullYear();
+				$('#date').val(year+"-"+month+"-"+day);
+			}
 		},
 	  error: function(error) {
 		//alert("Error: " + error.code + " " + error.message);
@@ -324,7 +336,7 @@ function createArticle(type){
 	var date_str;
 	//FALTAN LOS DEL EVENTO (el mapa)
 	if (type==2){
-		date_str = document.getElementById("fecha").value;
+		date_str = document.getElementById("date").value;
 	}
 	
 	//Check everything is filled
@@ -387,7 +399,7 @@ function updateArticle(type){
 	var date_str;
 	//FALTAN LOS DEL EVENTO (el mapa)
 	if (type==2){
-		date_str = document.getElementById("fecha").value;
+		date_str = document.getElementById("date").value;
 	}
 	//Check everything is filled
 	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
@@ -395,11 +407,7 @@ function updateArticle(type){
 	}
 	else{
 		var Evento = Parse.Object.extend("Evento");
-		var query = new Parse.Query(Evento);	
-		if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)
-			var date = new Date(date_str);
-			articulo.set("date",date);
-		}
+		var query = new Parse.Query(Evento);		
 		
 		var confirmation = confirm("Seguro que desea guardar los cambios?"); //popup con dos opciones
 			if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
@@ -407,12 +415,19 @@ function updateArticle(type){
 				query.equalTo("objectId", i);
 				query.first({
 				  success: function(Evento) {
+					
+					if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)
+						var date_str = object.get('date');
+						var fromDate = new Date(date_str);
+						Evento.set("date",fromDate);
+					}
+					  
 					Evento.set("title", title);
 					Evento.set("brief_description", brief_description);
 					Evento.set("description", description);
-					Evento.set("professor", author);
+					Evento.set("professor", professor);
 					Evento.set("email", email);
-					Evento.set("telephone", phone);
+					Evento.set("telephone", telephone);
 					Evento.save();
 					
 					alert('Actualizado con Exito ' + title);
