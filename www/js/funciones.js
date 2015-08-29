@@ -321,39 +321,48 @@ function createArticle(type){
 	var email = document.getElementById("email").value;
 	var telephone = document.getElementById("phone").value;
 	
+	var date_str;
 	//FALTAN LOS DEL EVENTO
+	if (type==2){
+		date_str = document.getElementById("fecha").value;
+	}
 	
+	//Check everything is filled
 	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
 		alert("Ingrese todos los datos");
 	}
 	else{
-		var articulo = Parse.Object.extend("Evento");
-		var noticia = new articulo();
+		var articuloParse = Parse.Object.extend("Evento");
+		var articulo = new articuloParse();
 		 
-		noticia.set("Type",type); 
-		noticia.set("title",title);
-		noticia.set("brief_description",brief_description)
-		noticia.set("description",description);
-		noticia.set("professor",professor);
-		noticia.set("telephone",telephone);
-		noticia.set("email",email);
-		noticia.set("link",link);
-		noticia.set("priority",false);
-		noticia.set("visits",0);
+		articulo.set("Type",type); 
+		articulo.set("title",title);
+		articulo.set("brief_description",brief_description)
+		articulo.set("description",description);
+		articulo.set("professor",professor);
+		articulo.set("telephone",telephone);
+		articulo.set("email",email);
+		articulo.set("link",link);
+		articulo.set("priority",false);
+		articulo.set("visits",0);
+		if (type==2){ //En caso de que sea evento
+			var date = new Date(date_str);
+			articulo.set("date",date);
+		}
 		
 		var confirmation = confirm("Seguro que desea agregar?"); //popup con dos opciones
 			if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
 				  //Guardamos el objeto en la nube 
-				noticia.save(null, {
-				success: function(noticia) {
+				articulo.save(null, {
+				success: function(articulo) {
 				// Execute any logic that should take place after the object is saved.
 				alert('Agregado con Exito');
 				location.href='admin_index.html';
 				},
-				error: function(noticia, error) {
+				error: function(articulo, error) {
 				// Execute any logic that should take place if the save fails.
 				// error is a Parse.Error with an error code and message.
-				alert('Error al Agregar');
+				alert('Error al Agregar' + error.message);
 				}
 				});
 			}

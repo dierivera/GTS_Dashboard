@@ -16,6 +16,7 @@
 		<script language="javascript" type="text/javascript" src="js/moment.js"></script>
 		<script>
 			//window.onload = loadPublications;
+			window.onload = getDate();
 		</script>
         <title>GTS Dashboard</title>
     </head>
@@ -31,52 +32,53 @@
 		
 		<div class="list">
 			<div class="item item-divider bar-positive">
-				<i class="icon ion-map"></i>
+				<i class="icon ion-ios-paper-outline"></i>
 				<b>Nuevo Evento</b>
 			</div>
 		</div>
 		
-		<div id="evento">
+		<!-- EJEMPLO DE Evento EDITABLE -->
+		<div id="noticias">
 			<div class="list">
 			  <label class="item item-input item-stacked-label">
-				<span class="input-label">Nombre del evento</span>
-				<input type="text" placeholder="Nuevo evento">
+				<span class="input-label">Titulo del Evento</span>
+				<textarea id="title" placeholder="Titulo de Noticia"></textarea>
 			  </label>
-			</div>
+			</div>						
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Descripci&oacute;n breve</span>
-				<textarea placeholder="Descripci&oacute;n breve"></textarea>
+				<textarea id="brief_description" placeholder="Descripci&oacute;n breve"></textarea>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Descripci&oacute;n</span>
-				<textarea placeholder="Descripci&oacute;n"></textarea>
+				<textarea id="description" placeholder="Descripci&oacute;n"></textarea>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Lugar</span>
-				<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDCqjYS59rf3PfJL0z8SKzgngGsLY1wkBc&sensor=false"> </script>
+				<!--script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDCqjYS59rf3PfJL0z8SKzgngGsLY1wkBc&sensor=false"> </script-->
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Fecha</span>
-				<input type="date">
+				<input id="fecha" type="date">
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Profesor Encargado</span>
-				<textarea placeholder="Autor"></textarea>
+				<textarea id="author" placeholder="Autor"></textarea>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Tel&eacute;fono</span>
-				<textarea placeholder="88888888"></textarea>
+				<textarea id="phone" placeholder="8888-8888"></textarea>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Correo electr&oacute;nico</span>
-				<textarea placeholder="autor@itcr.ac.cr"></textarea>
+				<textarea id="email" placeholder="autor@itcr.ac.cr"></textarea>
 			</label>
 			<label class="item item-input item-stacked-label">
 				<span class="input-label">Link externo (opcional)</span>
-				<textarea placeholder="www.example.com"></textarea>
+				<textarea id="link" placeholder="www.example.com"></textarea>
 			</label>
 			<div class="button-bar bar-positive">
-				  <a class="button">Crear</a>
+				  <a class="button" onclick="createArticle(2)">Crear</a>
 				  <a class="button" onclick="toPage('admin_index.html')">Cancelar</a>
 			</div>
 		</div>
