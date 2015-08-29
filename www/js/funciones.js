@@ -1,6 +1,6 @@
 var parseKey = "fxMmEKDgj8YsU6ViFsnynNpcTiXYqNlRKQHai5Oy";
 var appId = "m02AeiYtBKS6uwWorv5yfobZ2pC4r8I83ZUAnfie";
-var importantLimit = 10;
+var importantLimit = 10; //cantidad maxima de noticias cargadas en la pantalla principal
 var objectIds = [];
 var noticiaIds = [];
 var eventoIds = [];
@@ -123,7 +123,7 @@ function loadAdminArticles(type, contentDiv) {
 				}
 				var difundir = '<a class="tab-item" href="#"><i class="icon ion-android-notifications"></i> Difundir </a>';
 				var site = 'toEditPage('+ i +","+ type +');';
-				console.log(site);
+				//console.log(site);
 				var editar = '<a class="tab-item" onclick="return '+ site +'"><i class="icon ion-edit"></i> Editar</a>';
 				var eliminar = '<a class="tab-item" onclick="return deleteObject('+type + "," + i +');"><i class="icon ion-android-delete" ></i> Eliminar</a>';
 				//console.log('return deleteObject('+ i +')');
@@ -370,4 +370,10 @@ function createArticle(type){
 				//Do Nothing
 			}
 	}
+}
+
+function geoFindMe() {
+        //Iteracion 2
+		console.log(navigator.geolocation.getCurrentPosition());
+		alert(navigator.geolocation.getCurrentPosition());
 }
