@@ -328,7 +328,7 @@ function createArticle(type){
 	}
 	
 	//Check everything is filled
-	if((!title)||(!brief_description)||(!description == "")||(!professor)||(!email)||(!telephone)){
+	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
 		alert("Ingrese todos los datos");
 	}
 	else{
