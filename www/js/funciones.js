@@ -322,13 +322,13 @@ function createArticle(type){
 	var telephone = document.getElementById("phone").value;
 	
 	var date_str;
-	//FALTAN LOS DEL EVENTO
+	//FALTAN LOS DEL EVENTO (el mapa)
 	if (type==2){
 		date_str = document.getElementById("fecha").value;
 	}
 	
 	//Check everything is filled
-	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
+	if((!title)||(!brief_description)||(!description == "")||(!professor)||(!email)||(!telephone)){
 		alert("Ingrese todos los datos");
 	}
 	else{
@@ -345,7 +345,7 @@ function createArticle(type){
 		articulo.set("link",link);
 		articulo.set("priority",false);
 		articulo.set("visits",0);
-		if (type==2){ //En caso de que sea evento
+		if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)
 			var date = new Date(date_str);
 			articulo.set("date",date);
 		}
