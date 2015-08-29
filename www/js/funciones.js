@@ -235,8 +235,8 @@ function editObject(){
 			$('#title').val(object.get('title'));
 			$('#brief_description').val(object.get('brief_description'));
 			$('#description').val(object.get('description'));
-			$('#professor').val(object.get('professor'));
-			$('#telephone').val(object.get('telephone'));
+			$('#author').val(object.get('professor'));
+			$('#phone').val(object.get('telephone'));
 			$('#email').val(object.get('email'));
 			$('#link').val(object.get('link'));
 		},
@@ -350,7 +350,7 @@ function createArticle(type){
 			articulo.set("date",date);
 		}
 		
-		var confirmation = confirm("Seguro que desea agregar?"); //popup con dos opciones
+		var confirmation = confirm("Seguro que desea actualizar?"); //popup con dos opciones
 			if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
 				  //Guardamos el objeto en la nube 
 				articulo.save(null, {
@@ -364,6 +364,63 @@ function createArticle(type){
 				// error is a Parse.Error with an error code and message.
 				alert('Error al Agregar' + error.message);
 				}
+				});
+			}
+			else{
+				//Do Nothing
+			}
+	}
+}
+
+function updateArticle(type){
+	var i = getUrlParameter('objectId');
+	Parse.initialize(appId, parseKey);
+	var title = document.getElementById("title").value;
+	var brief_description = document.getElementById("brief_description").value;
+	var description = document.getElementById("description").value;
+	var link = document.getElementById("link").value;
+	
+	var professor = document.getElementById("author").value;
+	var email = document.getElementById("email").value;
+	var telephone = document.getElementById("phone").value;
+	
+	var date_str;
+	//FALTAN LOS DEL EVENTO (el mapa)
+	if (type==2){
+		date_str = document.getElementById("fecha").value;
+	}
+	//Check everything is filled
+	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
+		alert("Ingrese todos los datos");
+	}
+	else{
+		var Evento = Parse.Object.extend("Evento");
+		var query = new Parse.Query(Evento);	
+		if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)
+			var date = new Date(date_str);
+			articulo.set("date",date);
+		}
+		
+		var confirmation = confirm("Seguro que desea guardar los cambios?"); //popup con dos opciones
+			if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
+				  //Guardamos el objeto en la nube 
+				query.equalTo("objectId", i);
+				query.first({
+				  success: function(Evento) {
+					Evento.set("title", title);
+					Evento.set("brief_description", brief_description);
+					Evento.set("description", description);
+					Evento.set("professor", author);
+					Evento.set("email", email);
+					Evento.set("telephone", phone);
+					Evento.save();
+					
+					alert('Actualizado con Exito ' + title);
+					location.href='admin_index.html';
+				  },
+				  error: function(error) {
+					alert('Error al Actualizar' + error.message);
+				  }
 				});
 			}
 			else{
