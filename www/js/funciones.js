@@ -396,11 +396,6 @@ function updateArticle(type){
 	var email = document.getElementById("email").value;
 	var telephone = document.getElementById("phone").value;
 	
-	var date_str;
-	//FALTAN LOS DEL EVENTO (el mapa)
-	if (type==2){
-		date_str = document.getElementById("date").value;
-	}
 	//Check everything is filled
 	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
 		alert("Ingrese todos los datos");
