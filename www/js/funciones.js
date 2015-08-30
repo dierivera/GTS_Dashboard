@@ -428,7 +428,7 @@ function updateArticle(type){
 					Evento.set("telephone", telephone);
 					Evento.save();
 					
-					alert('Actualizado con Exito ' + title);
+					alert('Actualizado con Exito');
 					location.href='admin_index.html';
 				  },
 				  error: function(error) {
