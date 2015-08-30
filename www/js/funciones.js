@@ -359,7 +359,9 @@ function createArticle(type){
 		articulo.set("visits",0);
 		if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)
 			var date = new Date(date_str);
-			articulo.set("date",date);
+			var tomorrow = new Date(date);
+			tomorrow.setDate(date.getDate()+1);
+			articulo.set("date",tomorrow);
 		}
 		
 		var confirmation = confirm("Seguro que desea agregar?"); //popup con dos opciones
@@ -412,11 +414,12 @@ function updateArticle(type){
 				  success: function(Evento) {
 					
 					if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)
-						var date_str = object.get('date');
-						var fromDate = new Date(date_str);
-						Evento.set("date",fromDate);
+						var date_str = document.getElementById("date").value;
+						var date = new Date(date_str);
+						var tomorrow = new Date(date);
+						tomorrow.setDate(date.getDate()+1);
+						Evento.set("date",tomorrow);
 					}
-					  
 					Evento.set("title", title);
 					Evento.set("brief_description", brief_description);
 					Evento.set("description", description);
