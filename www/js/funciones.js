@@ -1,7 +1,7 @@
 var parseKey = "fxMmEKDgj8YsU6ViFsnynNpcTiXYqNlRKQHai5Oy";
 var appId = "m02AeiYtBKS6uwWorv5yfobZ2pC4r8I83ZUAnfie";
 var importantLimit = 10; //cantidad maxima de noticias cargadas en la pantalla principal
-var objectIds = [];
+//var objectIds = []; //changed this array for an array for each type of article.
 var noticiaIds = [];
 var eventoIds = [];
 var proyectoIds = [];
