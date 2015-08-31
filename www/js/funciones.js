@@ -263,6 +263,16 @@ function editObject(type){
 	});	
 }
 
+
+function currentUser(){
+	if (Parse.User.current()){
+		alert ("Usuario ya ha iniciado sesion")
+		toPage('admin_index.html');
+	}
+	else{
+		toPage('login.html');
+	}
+}
 function login() {
 	username = document.getElementById("username").value;
 	password = document.getElementById("password").value;
@@ -276,9 +286,10 @@ function login() {
 		error: function(user, error) {
 			alert ("Revisa el usuario o contraseña.");
 			document.getElementById("password").value = "";	
+			console.log (error.message);
+			Parse.User.logOut();
 		}
 	});
-	
 }
 
 
