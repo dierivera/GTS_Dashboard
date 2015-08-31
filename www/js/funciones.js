@@ -33,7 +33,8 @@ function loadPublications() {  //main screen loading
 	  error: function(error) {
 		//alert("Error: " + error.code + " " + error.message);
 		if (error.code = -1)
-			alert("Error de conexión, verifica la conexion de internet");
+			//alert("Error de conexión, verifica la conexion de internet");
+			console.log("error de conexion");
 	  }
 	});
 	
@@ -58,7 +59,8 @@ function loadPublications() {  //main screen loading
 	  error: function(error) {
 		//alert("Error: " + error.code + " " + error.message);
 		if (error.code = -1)
-			alert("Error de conexión, verifica la conexion de internet");
+			//alert("Error de conexión, verifica la conexion de internet");
+		console.log("Error de conexion");
 	  }
 	});
 } 
@@ -86,7 +88,8 @@ function loadArticle(type, contentDiv) {
 		  error: function(error) {
 			//alert("Error: " + error.code + " " + error.message);
 			if (error.code = -1)
-				alert("Error de conexión, verifica la conexion de internet");
+				//alert("Error de conexión, verifica la conexion de internet");
+				console.log("error" + error.message);
 		  }
 		});
 } 
