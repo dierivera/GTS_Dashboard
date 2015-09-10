@@ -8,6 +8,7 @@
         Grupo de Proyecto 03
     </author>
     <content src="index.html" />
+	<access origin="*" />
     <preference name="permissions" value="none" />
     <preference name="orientation" value="default" />
     <preference name="target-device" value="universal" />

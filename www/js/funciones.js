@@ -460,4 +460,7 @@ function geoFindMe() {
         //Iteracion 2
 		console.log(navigator.geolocation.getCurrentPosition());
 		alert(navigator.geolocation.getCurrentPosition());
+	
 }
+
+

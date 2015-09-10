@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    
+	<style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #mapa_div { height: 100% }
+    </style>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+    
+
+
+    <script type="text/javascript">
+
+      function inicializar_mapa() {
+		    var punto = new google.maps.LatLng(9.85425,-83.9074);
+ 
+            //Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
+            var myOptions = {
+            zoom: 15, center: punto, mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+ 
+            //Creamos el mapa e indicamos en qué caja queremos que se muestre
+            var map = new google.maps.Map(document.getElementById("mapa_div"),  myOptions);
+ 
+            //Opcionalmente podemos mostrar el marcador en el punto que hemos creado.
+            var marker = new google.maps.Marker({
+            position:punto,
+            map: map,
+            title:"Título del mapa"});
+          }
+        /*var mapOptions = {
+          center: new google.maps.LatLng(9.8596406,-83.9181084),
+          zoom: 10,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("mapa_div"),
+            mapOptions);
+      }*/
+    </script>
+  </head>
+  <body onload="inicializar_mapa()">
+    
+	<div id="mapa_div" style="width: 650px; height: 450px;"> </div>
+  </body>
+</html>

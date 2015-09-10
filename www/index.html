@@ -8,7 +8,7 @@
 
 		<link href="lib/ionic/css/ionic.css" rel="stylesheet">
 		<link href="css/style.css" rel="stylesheet">
-
+		<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
 		<!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
 		-->
 		<link href="css/ionic.app.css" rel="stylesheet">
@@ -24,12 +24,15 @@
 		<script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.0.23.min.js"></script>
 			<script language="javascript" type="text/javascript" src="js/funciones.js"></script>
 			<script language="javascript" type="text/javascript" src="js/moment.js"></script>
+			<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+			<script type="text/javascript" src="sencha-touch-debug.js"></script>
 			<script>
 				window.onload = loadPublications;
 			</script>
 			<title>GTS Dashboard</title>	
     </head>
     <body>
+		
 <ion-pane>
 		
 		<div class="bar bar-header bar-positive has-tabs-top">
@@ -95,12 +98,15 @@
 		</div>
 		<div id="masVistas">
 		</div>
+		
 	</ion-content>		
   
   
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script type="text/javascript">
-            app.initialize();
+
+}
+        app.initialize();
         </script>
 
 	</ion-pane>		
