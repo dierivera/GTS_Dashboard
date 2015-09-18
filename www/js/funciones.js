@@ -6,6 +6,15 @@ var noticiaIds = [];
 var eventoIds = [];
 var proyectoIds = [];
 
+var latitudEvento = 9.854143960129555;
+var longitudEvento = -83.90926783908691;
+
+var markerLatLng = null;
+var latitud = null;
+var longitud = null;
+
+
+
 //Carga los articulos con prioridad y los articulos mas vistos
 function loadPublications() {  //main screen loading
 	//Parse.initialize("$PARSE_APPLICATION_ID", "$PARSE_JAVASCRIPT_KEY");
@@ -228,7 +237,8 @@ function PageCreateArticle(type){ //type can be: 'noticia', 'evento' or 'proyect
 
 function editObject(type){
 	var i = getUrlParameter('objectId');
-	Parse.initialize(appId, parseKey);
+	//Parse.initialize(appId, parseKey);
+	Parse.initialize("OuUeJlO7rkJ5sk3aQedCiBrgtnt4KqtdQJRqnnFF", "8zr7fIFKPFHZ575wbXzLcQH2LFcZVkTJzoawV03S");
 	var Evento = Parse.Object.extend("Evento");		
 	var query = new Parse.Query(Evento);
 	query.equalTo("objectId", i);
@@ -244,7 +254,7 @@ function editObject(type){
 			$('#link').val(object.get('link'));
 			if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)				
 				var date_str = object.get('date');
-				var fromDate = new Date(date_str);
+			    var fromDate = new Date(date_str);
 				var day = fromDate.getDate();
 				if(day < 10)
 					day = "0"+day;
@@ -462,5 +472,105 @@ function geoFindMe() {
 		alert(navigator.geolocation.getCurrentPosition());
 	
 }
+
+
+
+
+function inicializar_mapa(id) {
+		if(id==0){
+			var punto = new google.maps.LatLng(latitudEvento, longitudEvento);
+
+			//Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
+			var myOptions = {
+			zoom: 15, center: punto, mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+
+			//Creamos el mapa e indicamos en qué caja queremos que se muestre
+			var map = new google.maps.Map(document.getElementById("mapa_div"),  myOptions);
+
+			//Opcionalmente podemos mostrar el marcador en el punto que hemos creado.
+			var marker = new google.maps.Marker({
+			position:punto,
+			draggable: true,
+			map: map
+			});
+
+			google.maps.event.addListener(marker, 'click', function(){
+				
+			markerLatLng = marker.getPosition();
+			latitud = markerLatLng.lat();
+			longitud = markerLatLng.lng();
+				 
+
+			});
+			
+		}
+		else if(id==1){
+			var punto = new google.maps.LatLng(latitudEvento, longitudEvento);
+
+			//Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
+			var myOptions = {
+			zoom: 15, center: punto, mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+
+			//Creamos el mapa e indicamos en qué caja queremos que se muestre
+			var map = new google.maps.Map(document.getElementById("mapa_div"),  myOptions);
+
+			//Opcionalmente podemos mostrar el marcador en el punto que hemos creado.
+			var marker = new google.maps.Marker({
+			position:punto,
+			draggable: true,
+			map: map
+			});
+
+			google.maps.event.addListener(marker, 'click', function(){
+				
+			markerLatLng = marker.getPosition();
+			latitud = markerLatLng.lat();
+			longitud = markerLatLng.lng();
+
+		});
+		}
+		else{
+			//Do Nothing
+		}
+		
+			
+}
+
+function save_coordinates(){
+		//Parse.initialize(appId, parseKey);
+		Parse.initialize("OuUeJlO7rkJ5sk3aQedCiBrgtnt4KqtdQJRqnnFF", "8zr7fIFKPFHZ575wbXzLcQH2LFcZVkTJzoawV03S");
+		var articuloParse = Parse.Object.extend("Evento");
+		var articulo = new articuloParse();
+		 
+		articulo.set("latitude",latitud);
+		articulo.set("longitude",longitud);
+		
+		
+		var confirmation = confirm("Seguro que desea agregar?"); //popup con dos opciones
+		if (confirmation){ //si se le da que si, entra a ejecutar
+			  //Guardamos el objeto en la nube 
+			articulo.save(null, {
+			success: function(articulo) {
+			// Execute any logic that should take place after the object is saved.
+			alert('Agregado con Exito');
+			location.href='createEvento.html';
+			},
+			error: function(articulo, error) {
+			// Execute any logic that should take place if the save fails.
+			// error is a Parse.Error with an error code and message.
+			alert('Error al Agregar' + error.message);
+			}
+			});
+		}
+		else{
+			//Do Nothing
+		}
+	}
+			
+
+
+
 
 

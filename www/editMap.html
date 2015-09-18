@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+    <script src="js/angular/angular.js"></script>
+	<link href="css/ionic.css" rel="stylesheet">
+	<link href="css/ionicons/css/ionicons.css" rel="stylesheet">
+	<script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.0.23.min.js"></script>
+	<script language="javascript" type="text/javascript" src="js/funciones.js"></script>
+	<script language="javascript" type="text/javascript" src="js/moment.js"></script>
+	
+	
+	</head>
+	<body onload = "inicializar_mapa(1)">
+			<div class="bar bar-header bar-positive">
+				<h1 class="title">GTS Dashboard</h1>
+			</div>
+    
+			<div id="mapa_div" style="width: 1050px; height: 650px;"> </div>
+		
+			<div class="button-bar bar-positive">
+				  <a class="button" onclick="save_coordinates()">Editar</a>
+				  <a class="button" onclick="toPage('editEvento.html')">Cancelar</a>
+			</div>
+		
+	</body>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+		<script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+		//app.initialize();
+
+        </script>
+		<script src="cordova.js"></script>
+
+    </script>
+  
+  
+</html>
