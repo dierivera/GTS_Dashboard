@@ -9,9 +9,12 @@ var proyectoIds = [];
 var latitudEvento = 9.854143960129555;
 var longitudEvento = -83.90926783908691;
 
-var markerLatLng = null;
-var latitud = null;
-var longitud = null;
+var markerLatLng;
+var latitud;
+var longitud; 
+
+var latitudActual;
+var longitudActual;
 
 
 
@@ -235,10 +238,14 @@ function PageCreateArticle(type){ //type can be: 'noticia', 'evento' or 'proyect
 	location.href="create" + type + ".html";
 }
 
+
+
+
+
 function editObject(type){
 	var i = getUrlParameter('objectId');
-	//Parse.initialize(appId, parseKey);
-	Parse.initialize("OuUeJlO7rkJ5sk3aQedCiBrgtnt4KqtdQJRqnnFF", "8zr7fIFKPFHZ575wbXzLcQH2LFcZVkTJzoawV03S");
+	Parse.initialize(appId, parseKey);
+	//Parse.initialize("OuUeJlO7rkJ5sk3aQedCiBrgtnt4KqtdQJRqnnFF", "8zr7fIFKPFHZ575wbXzLcQH2LFcZVkTJzoawV03S");
 	var Evento = Parse.Object.extend("Evento");		
 	var query = new Parse.Query(Evento);
 	query.equalTo("objectId", i);
@@ -253,6 +260,8 @@ function editObject(type){
 			$('#email').val(object.get('email'));
 			$('#link').val(object.get('link'));
 			if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)				
+				latitudActual = object.get('latitude');
+				longitudActual = object.get('longitude');
 				var date_str = object.get('date');
 			    var fromDate = new Date(date_str);
 				var day = fromDate.getDate();
@@ -264,6 +273,7 @@ function editObject(type){
 				var year = fromDate.getFullYear();
 				$('#date').val(year+"-"+month+"-"+day);
 			}
+
 		},
 	  error: function(error) {
 		//alert("Error: " + error.code + " " + error.message);
@@ -273,6 +283,9 @@ function editObject(type){
 	});	
 }
 
+function botonPulsado(){
+	location.href='editMap.html?lat='+latitudActual+'&lon='+longitudActual;
+}
 
 function currentUser(){
 	if (Parse.User.current()){
@@ -346,21 +359,116 @@ function getUrlParameter(sParam) {
 	}
 }
 
+
+
+function inicializar_mapa(id) {
+		if(id==0){
+			var punto = new google.maps.LatLng(latitudEvento, longitudEvento);
+
+			//Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
+			var myOptions = {
+			zoom: 15, center: punto, mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+
+			//Creamos el mapa e indicamos en qué caja queremos que se muestre
+			var map = new google.maps.Map(document.getElementById("mapa_div"),  myOptions);
+
+			//Opcionalmente podemos mostrar el marcador en el punto que hemos creado.
+			var marker = new google.maps.Marker({
+			position:punto,
+			draggable: true,
+			map: map
+			});
+
+			google.maps.event.addListener(marker, 'click', function(){
+				
+			markerLatLng = marker.getPosition();
+			latitud = markerLatLng.lat();
+			longitud = markerLatLng.lng();
+			document.getElementById("lat").innerHTML = latitud;
+			document.getElementById("lon").innerHTML = longitud;
+
+			});
+			
+		}
+		else if(id==1){
+			latitudEvento =  getUrlParameter('lat');
+			longitudEvento =  getUrlParameter('lon');
+			document.getElementById("lat").innerHTML = latitudEvento;
+			document.getElementById("lon").innerHTML = longitudEvento;
+			
+			var punto = new google.maps.LatLng(latitudEvento, longitudEvento);
+
+			//Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
+			var myOptions = {
+			zoom: 15, center: punto, mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+
+			//Creamos el mapa e indicamos en qué caja queremos que se muestre
+			var map = new google.maps.Map(document.getElementById("mapa_div"),  myOptions);
+
+			//Opcionalmente podemos mostrar el marcador en el punto que hemos creado.
+			var marker = new google.maps.Marker({
+			position:punto,
+			draggable: true,
+			map: map
+			});
+
+			google.maps.event.addListener(marker, 'click', function(){
+				
+			markerLatLng = marker.getPosition();
+			latitud = markerLatLng.lat();
+			longitud = markerLatLng.lng();
+			document.getElementById("lat").innerHTML = latitud;
+			document.getElementById("lon").innerHTML = longitud;
+
+		});
+		}
+		else{
+			//Do Nothing
+		}
+			
+}
+
+function save_coordinates(num){
+	alert('Agregado con Exito');
+	if(num==1){
+		//location.href='javascript:history.back()';
+		//history.pushState({"lat":latitud,"lon":longitud}, document.title, location.href);
+		location.href='createEvento.html?lat='+latitud+'&lon='+longitud;
+		//window.history.pushState(latitud, "Prueba", "createEvento.html");
+	}
+	else{
+		location.href='editEvento.html?lat='+latitud+'&lon='+longitud;
+	}
+	
+}
+
 function createArticle(type){	
 	Parse.initialize(appId, parseKey);
 	var title = document.getElementById("title").value;
 	var brief_description = document.getElementById("brief_description").value;
 	var description = document.getElementById("description").value;
 	var link = document.getElementById("link").value;
-	
 	var professor = document.getElementById("author").value;
 	var email = document.getElementById("email").value;
 	var telephone = document.getElementById("phone").value;
 	
+	var latitudAgregar;
+	var longitudAgregar;
+
 	var date_str;
 	//FALTAN LOS DEL EVENTO (el mapa)
 	if (type==2){
+		alert("PASA");
 		date_str = document.getElementById("date").value;
+
+		//latitudAgregar = window.onpopstate = state.lat;
+		//longitudAgregar = window.onpopstate = state.lon;
+		latitudAgregar = getUrlParameter('lat');
+		longitudAgregar = getUrlParameter('lon');
+		var numeroLatitud = Number(latitudAgregar);
+		var numeroLongitud = Number(longitudAgregar);
 	}
 	
 	//Check everything is filled
@@ -386,6 +494,9 @@ function createArticle(type){
 			var tomorrow = new Date(date);
 			tomorrow.setDate(date.getDate()+1);
 			articulo.set("date",tomorrow);
+			articulo.set("latitude",numeroLatitud);
+			articulo.set("longitude",numeroLongitud);
+
 		}
 		
 		var confirmation = confirm("Seguro que desea agregar?"); //popup con dos opciones
@@ -422,6 +533,8 @@ function updateArticle(type){
 	var email = document.getElementById("email").value;
 	var telephone = document.getElementById("phone").value;
 	
+	var latitudCambiar;
+	var longitudCambiar;
 	//Check everything is filled
 	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
 		alert("Ingrese todos los datos");
@@ -472,103 +585,6 @@ function geoFindMe() {
 		alert(navigator.geolocation.getCurrentPosition());
 	
 }
-
-
-
-
-function inicializar_mapa(id) {
-		if(id==0){
-			var punto = new google.maps.LatLng(latitudEvento, longitudEvento);
-
-			//Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
-			var myOptions = {
-			zoom: 15, center: punto, mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-
-			//Creamos el mapa e indicamos en qué caja queremos que se muestre
-			var map = new google.maps.Map(document.getElementById("mapa_div"),  myOptions);
-
-			//Opcionalmente podemos mostrar el marcador en el punto que hemos creado.
-			var marker = new google.maps.Marker({
-			position:punto,
-			draggable: true,
-			map: map
-			});
-
-			google.maps.event.addListener(marker, 'click', function(){
-				
-			markerLatLng = marker.getPosition();
-			latitud = markerLatLng.lat();
-			longitud = markerLatLng.lng();
-				 
-
-			});
-			
-		}
-		else if(id==1){
-			var punto = new google.maps.LatLng(latitudEvento, longitudEvento);
-
-			//Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
-			var myOptions = {
-			zoom: 15, center: punto, mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-
-			//Creamos el mapa e indicamos en qué caja queremos que se muestre
-			var map = new google.maps.Map(document.getElementById("mapa_div"),  myOptions);
-
-			//Opcionalmente podemos mostrar el marcador en el punto que hemos creado.
-			var marker = new google.maps.Marker({
-			position:punto,
-			draggable: true,
-			map: map
-			});
-
-			google.maps.event.addListener(marker, 'click', function(){
-				
-			markerLatLng = marker.getPosition();
-			latitud = markerLatLng.lat();
-			longitud = markerLatLng.lng();
-
-		});
-		}
-		else{
-			//Do Nothing
-		}
-		
-			
-}
-
-function save_coordinates(){
-		//Parse.initialize(appId, parseKey);
-		Parse.initialize("OuUeJlO7rkJ5sk3aQedCiBrgtnt4KqtdQJRqnnFF", "8zr7fIFKPFHZ575wbXzLcQH2LFcZVkTJzoawV03S");
-		var articuloParse = Parse.Object.extend("Evento");
-		var articulo = new articuloParse();
-		 
-		articulo.set("latitude",latitud);
-		articulo.set("longitude",longitud);
-		
-		
-		var confirmation = confirm("Seguro que desea agregar?"); //popup con dos opciones
-		if (confirmation){ //si se le da que si, entra a ejecutar
-			  //Guardamos el objeto en la nube 
-			articulo.save(null, {
-			success: function(articulo) {
-			// Execute any logic that should take place after the object is saved.
-			alert('Agregado con Exito');
-			location.href='createEvento.html';
-			},
-			error: function(articulo, error) {
-			// Execute any logic that should take place if the save fails.
-			// error is a Parse.Error with an error code and message.
-			alert('Error al Agregar' + error.message);
-			}
-			});
-		}
-		else{
-			//Do Nothing
-		}
-	}
-			
 
 
 
