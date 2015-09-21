@@ -131,10 +131,10 @@ function loadAdminArticles(type, contentDiv) {
 				//document.getElementById(contentDiv).innerHTML = document.getElementById(contentDiv).innerHTML + '<div class="card"><div class="item item-divider">'+ object.get('title') + '</div></div>';
 				var favorito;
 				if (object.get('priority')){
-					favorito = '<a class="tab-item" href="#"><i class="icon ion-android-star"></i>Favorito</a>';
+					favorito = '<a class="tab-item" onclick="return changepriorityObject('+type + "," + i +');"><i class="icon ion-android-star"></i>Favorito</a>';
 				}
 				else{
-					favorito = '<a class="tab-item" href="#"><i class="icon ion-android-star-outline"></i>Favorito</a>';
+					favorito = '<a class="tab-item" onclick="return changepriorityObject('+type + "," + i +');"><i class="icon ion-android-star-outline"></i>Favorito</a>';
 				}
 				var difundir = '<a class="tab-item" href="#"><i class="icon ion-android-notifications"></i> Difundir </a>';
 				var site = 'toEditPage('+ i +","+ type +');';
@@ -195,6 +195,7 @@ function createArticle(type){ //type can be: 'noticia', 'evento' or 'proyecto'
 	//alert ("Going to: create" + type + ".html");
 	location.href="create" + type + ".html";
 }
+
 
 function deleteObject(type, i){
 	//console.log(objectIds[i]);
@@ -542,6 +543,34 @@ function createArticle(type){
 				//Do Nothing
 			}
 	}
+}
+
+function changepriorityObject(type, i){
+	var objectId;
+	if (type == 1)
+		objectId = noticiaIds[i];
+	if (type == 2)
+		objectId = eventoIds[i];
+	if (type == 3)
+		objectId = proyectoIds[i];
+	console.log(objectId);
+	Parse.initialize(appId, parseKey);
+	var Evento = Parse.Object.extend("Evento");		
+	var query = new Parse.Query(Evento);
+	query.equalTo("objectId", objectId);
+	query.first({
+			success: function(object) {	
+				var prioridad = object.get('priority');
+				console.log (prioridad);
+				object.set('priority',!prioridad);
+				object.save();
+				alert('Prioridad Cambiada con Exito');
+				location.href='admin_index.html';
+			},
+			error: function(error) {
+				alert('Error al Actualizar' + error.message);
+			}	
+	});
 }
 
 function updateArticle(type){
