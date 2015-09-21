@@ -156,10 +156,14 @@ function loadAdminArticles(type, contentDiv) {
 			
 //envia a pagina de ingresada como site
 function toPage(site) {
-		//location.href='login.html'; //ejemplo
-		location.href=site;
-		//location.href="createEvento.html?objectId=0";
-		//console.log("TEST");
+	if (site == "editMap.html"){
+		if(typeof latitudActual != 'undefined' && typeof longitudActual != 'undefined')
+			site = site +'?lat='+latitudActual+'&lon='+longitudActual;
+	}
+	//location.href='login.html'; //ejemplo
+	location.href=site;
+	//location.href="createEvento.html?objectId=0";
+	//console.log("TEST");	
 }
 
 function toEditPage(i,type){
@@ -235,7 +239,18 @@ function deleteObject(type, i){
 //Funcion llamada para enviar a la pantalla de crearX.
 function PageCreateArticle(type){ //type can be: 'noticia', 'evento' or 'proyecto'
 	//alert ("Going to: create" + type + ".html");
-	location.href="create" + type + ".html";
+	if (type=="Evento"){
+		var confirmation = confirm("Desea agregar evento con Ubicacion?"); //popup con dos opciones
+		if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
+			toPage('createMap.html');
+		}
+		else{
+			location.href="createEvento.html";
+		}
+	}
+	else{
+		location.href="create" + type + ".html";
+	}
 }
 
 
@@ -259,9 +274,14 @@ function editObject(type){
 			$('#phone').val(object.get('telephone'));
 			$('#email').val(object.get('email'));
 			$('#link').val(object.get('link'));
-			if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)				
+			if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)	
+				try{
 				latitudActual = object.get('latitude');
 				longitudActual = object.get('longitude');
+			}
+				catch(err){
+					//DoNothing (no tiene ubicacion Guardada)
+				}
 				var date_str = object.get('date');
 			    var fromDate = new Date(date_str);
 				var day = fromDate.getDate();
@@ -283,9 +303,7 @@ function editObject(type){
 	});	
 }
 
-function botonPulsado(){
-	location.href='editMap.html?lat='+latitudActual+'&lon='+longitudActual;
-}
+
 
 function currentUser(){
 	if (Parse.User.current()){
@@ -392,37 +410,42 @@ function inicializar_mapa(id) {
 			
 		}
 		else if(id==1){
-			latitudEvento =  getUrlParameter('lat');
-			longitudEvento =  getUrlParameter('lon');
-			document.getElementById("lat").innerHTML = latitudEvento;
-			document.getElementById("lon").innerHTML = longitudEvento;
-			
-			var punto = new google.maps.LatLng(latitudEvento, longitudEvento);
-
-			//Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
-			var myOptions = {
-			zoom: 15, center: punto, mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-
-			//Creamos el mapa e indicamos en qué caja queremos que se muestre
-			var map = new google.maps.Map(document.getElementById("mapa_div"),  myOptions);
-
-			//Opcionalmente podemos mostrar el marcador en el punto que hemos creado.
-			var marker = new google.maps.Marker({
-			position:punto,
-			draggable: true,
-			map: map
-			});
-
-			google.maps.event.addListener(marker, 'click', function(){
+				latitudEvento =  getUrlParameter('lat');
+				longitudEvento =  getUrlParameter('lon');
+				if(typeof longitudEvento == 'undefined' && typeof latitudEvento == 'undefined'){
+					var latitudEvento = 9.854143960129555;
+					var longitudEvento = -83.90926783908691;
+					console.log(latitudEvento);
+					console.log(longitudEvento);
+				}
+				document.getElementById("lat").innerHTML = latitudEvento;
+				document.getElementById("lon").innerHTML = longitudEvento;
 				
-			markerLatLng = marker.getPosition();
-			latitud = markerLatLng.lat();
-			longitud = markerLatLng.lng();
-			document.getElementById("lat").innerHTML = latitud;
-			document.getElementById("lon").innerHTML = longitud;
+				var punto = new google.maps.LatLng(latitudEvento, longitudEvento);
 
-		});
+				//Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
+				var myOptions = {
+				zoom: 15, center: punto, mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+
+				//Creamos el mapa e indicamos en qué caja queremos que se muestre
+				var map = new google.maps.Map(document.getElementById("mapa_div"),  myOptions);
+
+				//Opcionalmente podemos mostrar el marcador en el punto que hemos creado.
+				var marker = new google.maps.Marker({
+				position:punto,
+				draggable: true,
+				map: map
+				});
+
+				google.maps.event.addListener(marker, 'click', function(){
+					
+				markerLatLng = marker.getPosition();
+				latitud = markerLatLng.lat();
+				longitud = markerLatLng.lng();
+				document.getElementById("lat").innerHTML = latitud;
+				document.getElementById("lon").innerHTML = longitud;
+				});
 		}
 		else{
 			//Do Nothing
@@ -577,13 +600,6 @@ function updateArticle(type){
 				//Do Nothing
 			}
 	}
-}
-
-function geoFindMe() {
-        //Iteracion 2
-		console.log(navigator.geolocation.getCurrentPosition());
-		alert(navigator.geolocation.getCurrentPosition());
-	
 }
 
 
