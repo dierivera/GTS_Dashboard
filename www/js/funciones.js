@@ -382,8 +382,9 @@ function getUrlParameter(sParam) {
 
 function inicializar_mapa(id) {
 		if(id==0){
+			var latitudEvento = 9.854143960129555;
+			var longitudEvento = -83.90926783908691;
 			var punto = new google.maps.LatLng(latitudEvento, longitudEvento);
-
 			//Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
 			var myOptions = {
 			zoom: 15, center: punto, mapTypeId: google.maps.MapTypeId.ROADMAP
