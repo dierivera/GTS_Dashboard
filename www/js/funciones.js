@@ -16,6 +16,8 @@ var longitud;
 var latitudActual;
 var longitudActual;
 
+var idEvento;
+
 
 
 //Carga los articulos con prioridad y los articulos mas vistos
@@ -141,6 +143,7 @@ function loadAdminArticles(type, contentDiv) {
 				//console.log(site);
 				var editar = '<a class="tab-item" onclick="return '+ site +'"><i class="icon ion-edit"></i> Editar</a>';
 				var eliminar = '<a class="tab-item" onclick="return deleteObject('+type + "," + i +');"><i class="icon ion-android-delete" ></i> Eliminar</a>';
+				//var eliminarUbicacion = '<a class="tab-item" onclick="return deleteObject('+type + "," + i +');"><i class="icon ion-android-close" ></i> Eliminar Ubicacion</a>';
 				//console.log('return deleteObject('+ i +')');
 				document.getElementById(contentDiv).innerHTML = document.getElementById(contentDiv).innerHTML + '<div class="card"> <div class="item item-text-wrap">' + object.get('title') + '<div class="item tabs tabs-secondary tabs-icon-left">' + favorito + difundir + editar + eliminar + '</div></div></div>';                                                                                                                                                                                                                                             
 				}
@@ -172,8 +175,18 @@ function toEditPage(i,type){
 		objectId = noticiaIds[i];
 		location.href='editNoticia.html?objectId=' + objectId;}
 	if (type == 2){
-		objectId = eventoIds[i];
-		location.href='editEvento.html?objectId=' + objectId;}
+		var confirmation = confirm("Desea editar ubicacion del Evento?"); //popup con dos opciones
+		if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
+			objectId = eventoIds[i];
+			//location.href='editMap.html?lat='+latitudActual+'&lon='+longitudActual;
+			toPage('editMap.html?objectId=' + objectId);
+		}
+		else{
+			objectId = eventoIds[i];
+			toPage('editEvento.html?objectId=' + objectId);
+			//location.href='editEvento.html?objectId=' + objectId;
+	    }
+		}
 	if (type == 3){
 		objectId = proyectoIds[i];
 		location.href='editProyecto.html?objectId=' + objectId;}
@@ -206,34 +219,34 @@ function deleteObject(type, i){
 		objectId = eventoIds[i];
 	if (type == 3)
 		objectId = proyectoIds[i];
-	Parse.initialize(appId, parseKey);
-	var Evento = Parse.Object.extend("Evento");		
-	var query = new Parse.Query(Evento);
-	query.equalTo("objectId", objectId);
-	query.find({
-		  success: function(results) {
-			var object = results[0];
-			var confirmation = confirm("Seguro que quiere eliminar el articulo?"); //popup con dos opciones
-			if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
-				object.destroy({
-				  success: function(object) {
-					alert("El elemento fue eliminado");
-					toPage("admin_index.html");
-				  },
-				  error: function(object, error) {
-					alert("Error al eliminar");
-				  }
-				});
-			}else {
-				//Do Nothing
-			}
-		},
-	  error: function(error) {
-		//alert("Error: " + error.code + " " + error.message);
-		if (error.code = -1)
-			alert("Error de conexi�n, verifica la conexion de internet");
-	  }
-	});	
+		Parse.initialize(appId, parseKey);
+		var Evento = Parse.Object.extend("Evento");		
+		var query = new Parse.Query(Evento);
+		query.equalTo("objectId", objectId);
+		query.find({
+			  success: function(results) {
+				var object = results[0];
+				var confirmation = confirm("Seguro que quiere eliminar el articulo?"); //popup con dos opciones
+				if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
+					object.destroy({
+					  success: function(object) {
+						alert("El elemento fue eliminado");
+						toPage("admin_index.html");
+					  },
+					  error: function(object, error) {
+						alert("Error al eliminar");
+					  }
+					});
+				}else {
+					//Do Nothing
+				}
+			},
+		  error: function(error) {
+			//alert("Error: " + error.code + " " + error.message);
+			if (error.code = -1)
+				alert("Error de conexi�n, verifica la conexion de internet");
+		  }
+		});	
 }
 
 
@@ -412,6 +425,7 @@ function inicializar_mapa(id) {
 			
 		}
 		else if(id==1){
+				idEvento =  getUrlParameter('objectId');
 				latitudEvento =  getUrlParameter('lat');
 				longitudEvento =  getUrlParameter('lon');
 				if(typeof longitudEvento == 'undefined' && typeof latitudEvento == 'undefined'){
@@ -456,15 +470,14 @@ function inicializar_mapa(id) {
 }
 
 function save_coordinates(num){
-	alert('Agregado con Exito');
+	
 	if(num==1){
-		//location.href='javascript:history.back()';
-		//history.pushState({"lat":latitud,"lon":longitud}, document.title, location.href);
+		alert('Agregado con Exito');
 		location.href='createEvento.html?lat='+latitud+'&lon='+longitud;
-		//window.history.pushState(latitud, "Prueba", "createEvento.html");
-	}
+		}
 	else{
-		location.href='editEvento.html?lat='+latitud+'&lon='+longitud;
+		alert('Editado con Exito');
+		location.href='editEvento.html?objectId='+idEvento+'&lat='+latitud+'&lon='+longitud;
 	}
 	
 }
@@ -485,11 +498,7 @@ function createArticle(type){
 	var date_str;
 	//FALTAN LOS DEL EVENTO (el mapa)
 	if (type==2){
-		alert("PASA");
 		date_str = document.getElementById("date").value;
-
-		//latitudAgregar = window.onpopstate = state.lat;
-		//longitudAgregar = window.onpopstate = state.lon;
 		latitudAgregar = getUrlParameter('lat');
 		longitudAgregar = getUrlParameter('lon');
 		var numeroLatitud = Number(latitudAgregar);
@@ -585,9 +594,10 @@ function updateArticle(type){
 	var professor = document.getElementById("author").value;
 	var email = document.getElementById("email").value;
 	var telephone = document.getElementById("phone").value;
+	var latitudCambiar  = getUrlParameter('lat');
+	var longitudCambiar = getUrlParameter('lon');
 	
-	var latitudCambiar;
-	var longitudCambiar;
+
 	//Check everything is filled
 	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
 		alert("Ingrese todos los datos");
@@ -602,13 +612,25 @@ function updateArticle(type){
 				query.equalTo("objectId", i);
 				query.first({
 				  success: function(Evento) {
-					
 					if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)
+						if(typeof latitudCambiar != 'undefined' && typeof longitudCambiar != 'undefined'){
+							var latitudActualizada = Number(latitudCambiar);
+							var longitudActualizada = Number(longitudCambiar);
+							Evento.set("latitude",latitudActualizada);
+							Evento.set("longitude",longitudActualizada);
+						}
+						else{
+							Evento.set("latitude",0);
+							Evento.set("longitude",0);
+						}
+						
+
 						var date_str = document.getElementById("date").value;
 						var date = new Date(date_str);
 						var tomorrow = new Date(date);
 						tomorrow.setDate(date.getDate()+1);
 						Evento.set("date",tomorrow);
+	
 					}
 					Evento.set("title", title);
 					Evento.set("brief_description", brief_description);
@@ -616,6 +638,7 @@ function updateArticle(type){
 					Evento.set("professor", professor);
 					Evento.set("email", email);
 					Evento.set("telephone", telephone);
+
 					Evento.save();
 					
 					alert('Actualizado con Exito');
@@ -630,6 +653,11 @@ function updateArticle(type){
 				//Do Nothing
 			}
 	}
+}
+
+function eliminarUbicacion(){
+	var id = getUrlParameter('objectId');
+	toPage('editEvento.html?objectId='+id+'&lat='+undefined+'&lon='+undefined);
 }
 
 
