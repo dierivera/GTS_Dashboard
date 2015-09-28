@@ -178,8 +178,23 @@ function toEditPage(i,type){
 		var confirmation = confirm("Desea editar ubicacion del Evento?"); //popup con dos opciones
 		if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
 			objectId = eventoIds[i];
-			//location.href='editMap.html?lat='+latitudActual+'&lon='+longitudActual;
-			toPage('editMap.html?objectId=' + objectId);
+			//alert(objectId);
+			Parse.initialize(appId, parseKey);
+			var Evento = Parse.Object.extend("Evento");
+			var query = new Parse.Query(Evento);
+			query.equalTo("objectId",objectId);
+			query.first({
+				success: function(obj){
+					var lat = obj.get('latitude');
+					var lon = obj.get('longitude');
+					location.href='editMap.html?objectId='+objectId+'&lat='+lat+'&lon='+lon;
+				},
+				error: function(error){
+					alert('Error'+error.message);
+				}
+			});
+			//location.href='editMap.html?objectId='+objectId+'&lat='+lat+'&lon='+lon;
+			//toPage('editMap.html?objectId=' + objectId);
 		}
 		else{
 			objectId = eventoIds[i];
@@ -428,7 +443,15 @@ function inicializar_mapa(id) {
 				idEvento =  getUrlParameter('objectId');
 				latitudEvento =  getUrlParameter('lat');
 				longitudEvento =  getUrlParameter('lon');
+				alert(latitudEvento);
+				alert(longitudEvento);
 				if(typeof longitudEvento == 'undefined' && typeof latitudEvento == 'undefined'){
+					var latitudEvento = 9.854143960129555;
+					var longitudEvento = -83.90926783908691;
+					console.log(latitudEvento);
+					console.log(longitudEvento);
+				}
+				else if(longitudEvento == 0 && latitudEvento == 0){
 					var latitudEvento = 9.854143960129555;
 					var longitudEvento = -83.90926783908691;
 					console.log(latitudEvento);
@@ -620,8 +643,9 @@ function updateArticle(type){
 							Evento.set("longitude",longitudActualizada);
 						}
 						else{
-							Evento.set("latitude",0);
-							Evento.set("longitude",0);
+							//alert("PASANDO PASANDO");
+							//Evento.set("latitude",0);
+							//Evento.set("longitude",0);
 						}
 						
 
@@ -657,7 +681,14 @@ function updateArticle(type){
 
 function eliminarUbicacion(){
 	var id = getUrlParameter('objectId');
-	toPage('editEvento.html?objectId='+id+'&lat='+undefined+'&lon='+undefined);
+	var confirmation = confirm("Esta seguro de Eliminar la Ubicacion?"); //popup con dos opciones
+		if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
+			toPage('editEvento.html?objectId='+id+'&lat='+0+'&lon='+0);
+		}
+		else{
+			//Do Nothing
+		}
+	
 }
 
 
