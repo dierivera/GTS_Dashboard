@@ -443,8 +443,6 @@ function inicializar_mapa(id) {
 				idEvento =  getUrlParameter('objectId');
 				latitudEvento =  getUrlParameter('lat');
 				longitudEvento =  getUrlParameter('lon');
-				alert(latitudEvento);
-				alert(longitudEvento);
 				if(typeof longitudEvento == 'undefined' && typeof latitudEvento == 'undefined'){
 					var latitudEvento = 9.854143960129555;
 					var longitudEvento = -83.90926783908691;
