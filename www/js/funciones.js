@@ -409,10 +409,14 @@ function getUrlParameter(sParam) {
 
 
 function inicializar_mapa(id) {
+		var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+		document.getElementById("mapa_div").style.width = width;
+		
 		if(id==0){
 			var latitudEvento = 9.854143960129555;
 			var longitudEvento = -83.90926783908691;
 			var punto = new google.maps.LatLng(latitudEvento, longitudEvento);
+			
 			//Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
 			var myOptions = {
 			zoom: 15, center: punto, mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -493,12 +497,24 @@ function inicializar_mapa(id) {
 function save_coordinates(num){
 	
 	if(num==1){
-		alert('Agregado con Exito');
-		location.href='createEvento.html?lat='+latitud+'&lon='+longitud;
+		if(typeof latitud == 'undefined' && typeof longitud == 'undefined'){
+			alert("Debe seleccionar la ubicacion deseada");
+		}
+		else{
+			alert('Agregado con Exito');
+			location.href='createEvento.html?lat='+latitud+'&lon='+longitud;
+		}
+		
 		}
 	else{
-		alert('Editado con Exito');
-		location.href='editEvento.html?objectId='+idEvento+'&lat='+latitud+'&lon='+longitud;
+		if(typeof latitud == 'undefined' && typeof longitud == 'undefined'){
+			alert("Debe seleccionar la ubicacion deseada");
+		}
+		else{
+			alert('Editado con Exito');
+			location.href='editEvento.html?objectId='+idEvento+'&lat='+latitud+'&lon='+longitud;
+		}
+		
 	}
 	
 }
