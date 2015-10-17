@@ -374,7 +374,7 @@ function showObject(type){
 			document.getElementById("author").innerHTML = object.get('professor');
 			document.getElementById("phone").innerHTML = object.get('telephone');
 			document.getElementById("email").innerHTML = object.get('email');
-			alert(object.get('link'));
+
 			
 			if(object.get('link')!=""){
 				document.getElementById("url").innerHTML = document.getElementById("url").innerHTML + '<i class="ion-android-search"></i><a href="#"><label id="link">'+ object.get('link') + '</label></a>';
