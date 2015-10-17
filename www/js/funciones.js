@@ -782,14 +782,12 @@ function cambiar(number)
 {
 	if(number == 1)
 	{
-		document.getElementById("loc_text").style.display = "none";
-		document.getElementById("loc_map").style.display = "initial";
+		document.getElementById("loc").innerHTML = '<span class="input-label ion-location" onclick="cambiar(2)">Ubicaci&oacute;n</span><div id="mapa_div" style="width: 360px; height: 425px"> </div>';
 		inicializar_mapa(0);
 	}
 	else
-	{
-		document.getElementById("loc_text").style.display = "initial";
-		document.getElementById("loc_map").style.display = "none";
+	{		
+		document.getElementById("loc").innerHTML = '<span class="input-label ion-compose" onclick="cambiar(1)">Ubicaci&oacute;n</span><textarea id="location" placeholder="Ubicaci&oacute;n"></textarea>';
 	}
 }
 
