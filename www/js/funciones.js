@@ -705,7 +705,20 @@ function eliminarUbicacion(){
 	
 }
 
-
+function cambiar(number)
+{
+	if(number == 1)
+	{
+		document.getElementById("loc_text").style.display = "none";
+		document.getElementById("loc_map").style.display = "initial";
+		inicializar_mapa(0);
+	}
+	else
+	{
+		document.getElementById("loc_text").style.display = "initial";
+		document.getElementById("loc_map").style.display = "none";
+	}
+}
 
 
 
