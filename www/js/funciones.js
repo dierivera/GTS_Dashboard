@@ -40,8 +40,17 @@ function loadPublications() {  //main screen loading
 			stopper = results.length;}
 		for (var i = 0; i < stopper; i++) {
 		  var object = results[i];
-		  var date = '</div><div class="item item-divider"><div class="item item-divider">'+   moment(object.updatedAt).format('MMMM Do YYYY, h:mm:ss a')+ '</div>';
-		  document.getElementById("importantes").innerHTML = document.getElementById("importantes").innerHTML + '<div class="card"> <div class="item item-divider">'+ geticon(true) + " " +object.get('title') + '</div><div class="item item-text-wrap">'+object.get('brief_description')+  date +' </div></div>';
+		  var tipo = object.get('Type');
+		      if (tipo == 1)
+				noticiaIds[i] = object.id;
+			  if (tipo == 2)
+				eventoIds[i] = object.id;
+			  if (tipo == 3)
+				proyectoIds[i] = object.id;
+			
+		  var funcion = '"toShowPage('+ i +","+ tipo +');"';
+		  var date = '</a><div class="item item-divider"><div class="item item-divider">'+   moment(object.updatedAt).format('MMMM Do YYYY, h:mm:ss a')+ '</div>';
+		  document.getElementById("importantes").innerHTML = document.getElementById("importantes").innerHTML + '<div class="card"> <a class="item item-divider" href="#" onclick='+funcion+'>'+ geticon(true) + " " +object.get('title') + '</a><a class="item item-text-wrap"  href="#" onclick='+funcion+'>'+object.get('brief_description')+  date +' </div></div>';
 		  }
 	  },
 	  error: function(error) {
@@ -66,8 +75,17 @@ function loadPublications() {  //main screen loading
 			stopper = results.length;}
 		for (var i = 0; i < stopper; i++) { 
 		  var object = results[i];
-		  var date = '</div><div class="item item-divider"><div class="item item-divider">'+   moment(object.updatedAt).format('MMMM Do YYYY, h:mm:ss a')+ '</div>';
-		  document.getElementById("masVistas").innerHTML = document.getElementById("masVistas").innerHTML + '<div class="card"> <div class="item item-divider">'+ geticon(false) + " " +object.get('title') + '</div><div class="item item-text-wrap">'+object.get('brief_description')+ date + '</div></div>';
+		  var tipo = object.get('Type');
+			  if (tipo == 1)
+				noticiaIds[i] = object.id;
+			  if (tipo == 2)
+				eventoIds[i] = object.id;
+			  if (tipo == 3)
+				proyectoIds[i] = object.id;
+			
+		  var funcion = '"toShowPage('+ i +","+ tipo +');"';
+		  var date = '</a><div class="item item-divider"><div class="item item-divider">'+   moment(object.updatedAt).format('MMMM Do YYYY, h:mm:ss a')+ '</div>';
+		  document.getElementById("masVistas").innerHTML = document.getElementById("masVistas").innerHTML + '<div class="card"> <a class="item item-divider" href="#" onclick='+funcion+'>'+ geticon(false) + " " +object.get('title') + '</a><a class="item item-text-wrap" href="#" onclick='+funcion+'>'+object.get('brief_description')+ date + '</div></div>';
 		  }
 	  },
 	  error: function(error) {
@@ -95,8 +113,16 @@ function loadArticle(type, contentDiv) {
 			// Do something with the returned Parse.Object values
 			for (var i = 0; i < results.length; i++) { 
 			  var object = results[i];
-			  var date = '</div><div class="item item-divider"><div class="item item-divider">'+   moment(object.updatedAt).format('MMMM Do YYYY, h:mm:ss a')+ '</div>';
-			  document.getElementById(contentDiv).innerHTML = document.getElementById(contentDiv).innerHTML + '<div class="card"> <div class="item item-divider">'+ geticon(object.get('priority')) + " " +object.get('title') + '</div><div class="item item-text-wrap">'+object.get('brief_description')+ date + '</div></div>';
+			  if (type == 1)
+					noticiaIds[i] = object.id;
+				if (type == 2)
+					eventoIds[i] = object.id;
+				if (type == 3)
+					proyectoIds[i] = object.id;
+			 
+			  var date = '</a><div class="item item-divider"><div class="item item-divider">'+   moment(object.updatedAt).format('MMMM Do YYYY, h:mm:ss a')+ '</div>';
+			  var funcion = '"toShowPage('+ i +","+ type +');"';
+			  document.getElementById(contentDiv).innerHTML = document.getElementById(contentDiv).innerHTML + '<div class="card"> <a class="item item-divider" href="#" onclick='+funcion+'>'+ geticon(object.get('priority')) + " " +object.get('title') + '</a><a class="item item-text-wrap" href="#" onclick='+funcion+'>'+object.get('brief_description')+ date + '</div></div>';
 			  }
 		  },
 		  error: function(error) {
@@ -207,6 +233,19 @@ function toEditPage(i,type){
 		location.href='editProyecto.html?objectId=' + objectId;}
 }
 	
+function toShowPage(i,type){
+	var objectId;
+	if (type == 1){
+		objectId = noticiaIds[i];
+		location.href='viewNoticia.html?objectId=' + objectId;}
+	if (type == 2){
+		objectId = eventoIds[i];
+		toPage('viewEvento.html?objectId=' + objectId);}
+	if (type == 3){
+		objectId = proyectoIds[i];
+		location.href='viewProyecto.html?objectId=' + objectId;}
+}
+
 	
 //les pone una estrella al inicio para los articulos de prioridad			
 function geticon (priority) {
@@ -268,19 +307,9 @@ function deleteObject(type, i){
 //Funcion llamada para enviar a la pantalla de crearX.
 function PageCreateArticle(type){ //type can be: 'noticia', 'evento' or 'proyecto'
 	//alert ("Going to: create" + type + ".html");
-	if (type=="Evento"){
-		var confirmation = confirm("Desea agregar evento con Ubicacion?"); //popup con dos opciones
-		if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
-			toPage('createMap.html');
-		}
-		else{
-			location.href="createEvento.html";
-		}
-	}
-	else{
+	
 		location.href="create" + type + ".html";
 	}
-}
 
 
 
@@ -332,7 +361,51 @@ function editObject(type){
 	});	
 }
 
+function showObject(type){
+	var i = getUrlParameter('objectId');
+	Parse.initialize(appId, parseKey);
+	//Parse.initialize("OuUeJlO7rkJ5sk3aQedCiBrgtnt4KqtdQJRqnnFF", "8zr7fIFKPFHZ575wbXzLcQH2LFcZVkTJzoawV03S");
+	var Evento = Parse.Object.extend("Evento");		
+	var query = new Parse.Query(Evento);
+	query.equalTo("objectId", i);
+	query.find({
+		  success: function(results) {
+			var object = results[0];
+			document.getElementById("title").innerHTML = object.get('title');	
+			document.getElementById("description").innerHTML = object.get('description');
+			document.getElementById("author").innerHTML = object.get('professor');
+			document.getElementById("phone").innerHTML = object.get('telephone');
+			document.getElementById("email").innerHTML = object.get('email');
+			document.getElementById("link").innerHTML = object.get('link');
 
+			if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)	
+				try{
+				latitudActual = object.get('latitude');
+				longitudActual = object.get('longitude');
+			}
+				catch(err){
+					//DoNothing (no tiene ubicacion Guardada)
+				}
+				var date_str = object.get('date');
+			    var fromDate = new Date(date_str);
+				var day = fromDate.getDate();
+				if(day < 10)
+					day = "0"+day;
+				var month = fromDate.getMonth() + 1; //Months are zero based
+				if(month < 10)
+					month = "0"+month;
+				var year = fromDate.getFullYear();
+				$('#date').val(year+"-"+month+"-"+day);
+			}
+
+		},
+	  error: function(error) {
+		//alert("Error: " + error.code + " " + error.message);
+		//if (error.code = -1)
+			//alert("Error de conexi�n, verifica la conexion de internet");
+	  }
+	});	
+}
 
 function currentUser(){
 	if (Parse.User.current()){
