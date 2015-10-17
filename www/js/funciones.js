@@ -388,12 +388,26 @@ function showObject(type){
 			document.getElementById("author").innerHTML = object.get('professor');
 			document.getElementById("phone").innerHTML = object.get('telephone');
 			document.getElementById("email").innerHTML = object.get('email');
-			document.getElementById("link").innerHTML = object.get('link');
+			alert(object.get('link'));
+			
+			if(object.get('link')!=""){
+				document.getElementById("url").innerHTML = document.getElementById("url").innerHTML + '<i class="ion-android-search"></i><a href="#"><label id="link">'+ object.get('link') + '</label></a>';
+			}
+			
 
 			if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)	
+				var tipoUbicacion = object.get('locationType');
 				try{
-				latitudActual = object.get('latitude');
-				longitudActual = object.get('longitude');
+				if(tipoUbicacion==1){
+					document.getElementById("location").innerHTML = document.getElementById("location").innerHTML + '<i class="ion-android-locate"'+'></i><label id="ubicacion">'+ object.get('location') + '</label>';
+					//document.getElementById("ubicacion").innerHTML = object.get('location');
+				}	
+				if(tipoUbicacion==2){
+					document.getElementById("location").innerHTML = document.getElementById("location").innerHTML + '<i class="ion-android-locate"'+'></i><label id="ubicacion">     Ver Mapa  </label>';
+					latitudActual = object.get('latitude');
+					longitudActual = object.get('longitude');
+				}
+				
 			}
 				catch(err){
 					//DoNothing (no tiene ubicacion Guardada)
