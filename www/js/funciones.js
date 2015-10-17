@@ -18,20 +18,6 @@ var longitudActual;
 
 var idEvento;
 
-function onload(){
-ParsePushPlugin.register({
-    appId:"m02AeiYtBKS6uwWorv5yfobZ2pC4r8I83ZUAnfie", clientKey:"r85oLdrDb82jV0yiaV9rCYlVq9xBIEqfc38Bsgmp", eventKey:"myEventKey"},
-    function() {
-        alert('successfully registered device!');
-    }, function(e) {
-        alert('error registering device: ' + e);
-    });
-}
- 
-ParsePushPlugin.on('receivePN', function(pn){
-        alert('yo i got this push notification:' + JSON.stringify(pn));
-    });
-
 //Carga los articulos con prioridad y los articulos mas vistos
 function loadPublications() {  //main screen loading
 	//Parse.initialize("$PARSE_APPLICATION_ID", "$PARSE_JAVASCRIPT_KEY");
@@ -406,6 +392,7 @@ function showObject(type){
 					document.getElementById("location").innerHTML = document.getElementById("location").innerHTML + '<i class="ion-android-locate"'+'></i><label id="ubicacion">     Ver Mapa  </label>';
 					latitudActual = object.get('latitude');
 					longitudActual = object.get('longitude');
+					
 				}
 				
 			}
