@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <!--meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /-->
+		<script src="js/angular/angular.js"></script>
+		<link href="css/ionic.css" rel="stylesheet">
+		<link href="css/ionicons/css/ionicons.css" rel="stylesheet">
+		<script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.0.23.min.js"></script>
+		<script language="javascript" type="text/javascript" src="js/funciones.js"></script>
+		<script language="javascript" type="text/javascript" src="js/moment.js"></script>
+		<script>
+			//window.onload = loadPublications;
+			//window.onload = getDate;
+			window.onload = editObject(1);
+		</script>
+        <title>GTS Dashboard</title>
+    </head>
+    <body>			
+		<div class="bar bar-header bar-positive">
+			<button class="button button-icon icon ion-chevron-left" onclick="toPage('admin_index.html')">Back</button>
+			<h1 class="title">GTS Dashboard</h1>
+		</div>
+		
+		<ul class="list">
+			BEHIND TITLE TEXT
+		</ul>
+		
+		<div class="list">
+			<div class="item item-divider bar-positive">
+				<i class="icon ion-ios-paper-outline"></i>
+				<b>Editar Noticia</b>
+			</div>
+		</div>
+		
+		<!-- EJEMPLO DE NOTICIA EDITABLE -->
+		<div id="noticias">
+			<div class="list">
+			  <label class="item item-input item-stacked-label">
+				<span class="input-label">Titulo de la noticia</span>
+				<textarea id="title" placeholder="Titulo de Noticia"></textarea>
+			  </label>
+			</div>						
+			<label class="item item-input item-stacked-label">
+				<span class="input-label">Descripci&oacute;n breve</span>
+				<textarea id="brief_description" placeholder="Descripci&oacute;n breve"></textarea>
+			</label>
+			<label class="item item-input item-stacked-label">
+				<span class="input-label">Descripci&oacute;n</span>
+				<textarea id="description" placeholder="Descripci&oacute;n"></textarea>
+			</label>
+			<label class="item item-input item-stacked-label">
+				<span class="input-label">Profesor Encargado</span>
+				<textarea id="author" placeholder="Autor"></textarea>
+			</label>
+			<label class="item item-input item-stacked-label">
+				<span class="input-label">Tel&eacute;fono</span>
+				<textarea id="phone" placeholder="8888-8888"></textarea>
+			</label>
+			<label class="item item-input item-stacked-label">
+				<span class="input-label">Correo electr&oacute;nico</span>
+				<textarea id="email" placeholder="autor@itcr.ac.cr"></textarea>
+			</label>
+			<label class="item item-input item-stacked-label">
+				<span class="input-label">Link externo (opcional)</span>
+				<textarea id="link" placeholder="www.example.com"></textarea>
+			</label>
+			<div class="button-bar bar-positive">
+				  <a class="button" onclick="updateArticle(1)">Editar</a>
+				  <a class="button" onclick="toPage('admin_index.html')">Cancelar</a>
+			</div>
+		</div>
+				
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+        </script>
+		<script src="cordova.js"></script>
+		
+    </body>
+</html>

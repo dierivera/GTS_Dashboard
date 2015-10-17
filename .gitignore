@@ -47,8 +47,6 @@ run.bat
 
 #files that could harm used
 hooks/
-platforms/
-plugins/
 
 #Readme file
 README.md
