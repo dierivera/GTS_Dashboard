@@ -373,10 +373,12 @@ function showObject(type){
 			document.getElementById("title").innerHTML = object.get('title');
 			document.getElementById("description").innerHTML = object.get('description');
 			document.getElementById("author").innerHTML = object.get('professor');
-			document.getElementById("phone").innerHTML = object.get('telephone');
-			document.getElementById("email").innerHTML = object.get('email');
+			//document.getElementById("phone").innerHTML = object.get('telephone');
+			//document.getElementById("email").innerHTML = object.get('email');
 			twitterTitle = object.get('title');
 			twitterBrief = object.get('brief_description');
+			document.getElementById("telefono").innerHTML = '<i class="icon ion-ios-telephone"></i><a href="tel:'+object.get('telephone')+'"><label> '+object.get('telephone')+'</label></a>';
+			document.getElementById("correo").innerHTML = '<i class="icon ion-ios-email"></i><a href="mailto:'+object.get('email')+'"><label> '+object.get('email')+'</label></a>';
 			document.getElementById("compartir").innerHTML = '<a class="tab-item" onclick="share()"><i class="ion-social-twitter"></i>Twitter</a>';
 
 			if(object.get('link')!=""){
