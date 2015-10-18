@@ -15,7 +15,8 @@ var longitud;
 
 var latitudActual;
 var longitudActual;
-
+var twitterTitle;
+var twitterBrief;
 var idEvento;
 
 //Carga los articulos con prioridad y los articulos mas vistos
@@ -374,7 +375,9 @@ function showObject(type){
 			document.getElementById("author").innerHTML = object.get('professor');
 			document.getElementById("phone").innerHTML = object.get('telephone');
 			document.getElementById("email").innerHTML = object.get('email');
-
+			twitterTitle = object.get('title');
+			twitterBrief = object.get('brief_description');
+			document.getElementById("compartir").innerHTML = '<a class="tab-item" onclick="share()"><i class="ion-social-twitter"></i>Twitter</a>';
 
 			if(object.get('link')!=""){
 				document.getElementById("url").innerHTML = document.getElementById("url").innerHTML + '<i class="ion-android-search"></i><a href="#"><label id="link">'+ object.get('link') + '</label></a>';
@@ -815,4 +818,9 @@ function cambiar(number)
 	{
 		document.getElementById("loc").innerHTML = '<span class="input-label ion-compose" onclick="cambiar(1)">Ubicaci&oacute;n</span><textarea id="location" placeholder="Ubicaci&oacute;n"></textarea>';
 	}
+}
+
+function share(){
+	window.open('https://twitter.com/intent/tweet?text='+'GTS - '+twitterTitle+':'+'%0A'+twitterBrief, '_system', 'location=no');
+	//alert(twitter);
 }
