@@ -11,7 +11,7 @@ var longitudEvento = -83.90926783908691;
 
 var markerLatLng;
 var latitud;
-var longitud; 
+var longitud;
 
 var latitudActual;
 var longitudActual;
@@ -45,7 +45,7 @@ function loadPublications() {  //main screen loading
 				eventoIds[i] = object.id;
 			  if (tipo == 3)
 				proyectoIds[i] = object.id;
-			
+
 		  var funcion = '"toShowPage('+ i +","+ tipo +');"';
 		  var date = '</a><div class="item item-divider"><div class="item item-divider">'+   moment(object.updatedAt).format('MMMM Do YYYY, h:mm:ss a')+ '</div>';
 		  document.getElementById("importantes").innerHTML = document.getElementById("importantes").innerHTML + '<div class="card"> <a class="item item-divider" href="#" onclick='+funcion+'>'+ geticon(true) + " " +object.get('title') + '</a><a class="item item-text-wrap"  href="#" onclick='+funcion+'>'+object.get('brief_description')+  date +' </div></div>';
@@ -58,7 +58,7 @@ function loadPublications() {  //main screen loading
 			console.log("error de conexion");
 	  }
 	});
-	
+
 	var query2 = new Parse.Query(Evento);
 	query2.equalTo("priority", false);
 	query2.descending("visits");
@@ -71,7 +71,7 @@ function loadPublications() {  //main screen loading
 			stopper=importantLimit;}
 		else{
 			stopper = results.length;}
-		for (var i = 0; i < stopper; i++) { 
+		for (var i = 0; i < stopper; i++) {
 		  var object = results[i];
 		  var tipo = object.get('Type');
 			  if (tipo == 1)
@@ -80,7 +80,7 @@ function loadPublications() {  //main screen loading
 				eventoIds[i] = object.id;
 			  if (tipo == 3)
 				proyectoIds[i] = object.id;
-			
+
 		  var funcion = '"toShowPage('+ i +","+ tipo +');"';
 		  var date = '</a><div class="item item-divider"><div class="item item-divider">'+   moment(object.updatedAt).format('MMMM Do YYYY, h:mm:ss a')+ '</div>';
 		  document.getElementById("masVistas").innerHTML = document.getElementById("masVistas").innerHTML + '<div class="card"> <a class="item item-divider" href="#" onclick='+funcion+'>'+ geticon(false) + " " +object.get('title') + '</a><a class="item item-text-wrap" href="#" onclick='+funcion+'>'+object.get('brief_description')+ date + '</div></div>';
@@ -93,14 +93,14 @@ function loadPublications() {  //main screen loading
 		console.log("Error de conexion");
 	  }
 	});
-} 
+}
 
-			
-//Carga las noticias, eventos o proyectos segun la pantalla	
+
+//Carga las noticias, eventos o proyectos segun la pantalla
 function loadArticle(type, contentDiv) {
 	//Parse.initialize("$PARSE_APPLICATION_ID", "$PARSE_JAVASCRIPT_KEY");
 	Parse.initialize(appId, parseKey);
-	var Evento = Parse.Object.extend("Evento");		
+	var Evento = Parse.Object.extend("Evento");
 	var query = new Parse.Query(Evento);
 	query.equalTo("Type", type);
 	query.descending("updatedAt");
@@ -109,7 +109,7 @@ function loadArticle(type, contentDiv) {
 		  success: function(results) {
 			//alert("Successfully retrieved " + results.length + " noticias.");
 			// Do something with the returned Parse.Object values
-			for (var i = 0; i < results.length; i++) { 
+			for (var i = 0; i < results.length; i++) {
 			  var object = results[i];
 			  if (type == 1)
 					noticiaIds[i] = object.id;
@@ -117,7 +117,7 @@ function loadArticle(type, contentDiv) {
 					eventoIds[i] = object.id;
 				if (type == 3)
 					proyectoIds[i] = object.id;
-			 
+
 			  var date = '</a><div class="item item-divider"><div class="item item-divider">'+   moment(object.updatedAt).format('MMMM Do YYYY, h:mm:ss a')+ '</div>';
 			  var funcion = '"toShowPage('+ i +","+ type +');"';
 			  document.getElementById(contentDiv).innerHTML = document.getElementById(contentDiv).innerHTML + '<div class="card"> <a class="item item-divider" href="#" onclick='+funcion+'>'+ geticon(object.get('priority')) + " " +object.get('title') + '</a><a class="item item-text-wrap" href="#" onclick='+funcion+'>'+object.get('brief_description')+ date + '</div></div>';
@@ -130,14 +130,14 @@ function loadArticle(type, contentDiv) {
 				console.log("error" + error.message);
 		  }
 		});
-} 
+}
 
 
-//Carga las noticias, eventos o proyectos segun la pantalla	
+//Carga las noticias, eventos o proyectos segun la pantalla
 function loadAdminArticles(type, contentDiv) {
 	//Parse.initialize("$PARSE_APPLICATION_ID", "$PARSE_JAVASCRIPT_KEY");
 	Parse.initialize(appId, parseKey);
-	var Evento = Parse.Object.extend("Evento");		
+	var Evento = Parse.Object.extend("Evento");
 	var query = new Parse.Query(Evento);
 	query.equalTo("Type", type);
 	query.descending("updatedAt");
@@ -146,7 +146,7 @@ function loadAdminArticles(type, contentDiv) {
 		  success: function(results) {
 			//alert("Successfully retrieved " + results.length + " noticias.");
 			// Do something with the returned Parse.Object values
-			for (var i = 0; i < results.length; i++) { 
+			for (var i = 0; i < results.length; i++) {
 				var object = results[i];
 				if (type == 1)
 					noticiaIds[i] = object.id;
@@ -169,7 +169,7 @@ function loadAdminArticles(type, contentDiv) {
 				var eliminar = '<a class="tab-item" onclick="return deleteObject('+type + "," + i +');"><i class="icon ion-android-delete" ></i> Eliminar</a>';
 				//var eliminarUbicacion = '<a class="tab-item" onclick="return deleteObject('+type + "," + i +');"><i class="icon ion-android-close" ></i> Eliminar Ubicacion</a>';
 				//console.log('return deleteObject('+ i +')');
-				document.getElementById(contentDiv).innerHTML = document.getElementById(contentDiv).innerHTML + '<div class="card"> <div class="item item-text-wrap">' + object.get('title') + '<div class="item tabs tabs-secondary tabs-icon-left">' + favorito + difundir + editar + eliminar + '</div></div></div>';                                                                                                                                                                                                                                             
+				document.getElementById(contentDiv).innerHTML = document.getElementById(contentDiv).innerHTML + '<div class="card"> <div class="item item-text-wrap">' + object.get('title') + '<div class="item tabs tabs-secondary tabs-icon-left">' + favorito + difundir + editar + eliminar + '</div></div></div>';
 				}
 		  },
 		  error: function(error) {
@@ -178,9 +178,9 @@ function loadAdminArticles(type, contentDiv) {
 				alert("Error de conexión, verifica la conexion de internet");
 		  }
 		});
-} 
+}
 
-			
+
 //envia a pagina de ingresada como site
 function toPage(site) {
 	if (site == "editMap.html"){
@@ -190,7 +190,7 @@ function toPage(site) {
 	//location.href='login.html'; //ejemplo
 	location.href=site;
 	//location.href="createEvento.html?objectId=0";
-	//console.log("TEST");	
+	//console.log("TEST");
 }
 
 function toEditPage(i,type){
@@ -230,7 +230,7 @@ function toEditPage(i,type){
 		objectId = proyectoIds[i];
 		location.href='editProyecto.html?objectId=' + objectId;}
 }
-	
+
 function toShowPage(i,type){
 	var objectId;
 	if (type == 1){
@@ -244,8 +244,8 @@ function toShowPage(i,type){
 		location.href='viewProyecto.html?objectId=' + objectId;}
 }
 
-	
-//les pone una estrella al inicio para los articulos de prioridad			
+
+//les pone una estrella al inicio para los articulos de prioridad
 function geticon (priority) {
 	Parse.initialize(appId, parseKey);
 	if (priority == true) //es importante
@@ -272,7 +272,7 @@ function deleteObject(type, i){
 	if (type == 3)
 		objectId = proyectoIds[i];
 		Parse.initialize(appId, parseKey);
-		var Evento = Parse.Object.extend("Evento");		
+		var Evento = Parse.Object.extend("Evento");
 		var query = new Parse.Query(Evento);
 		query.equalTo("objectId", objectId);
 		query.find({
@@ -298,14 +298,14 @@ function deleteObject(type, i){
 			if (error.code = -1)
 				alert("Error de conexi�n, verifica la conexion de internet");
 		  }
-		});	
+		});
 }
 
 
 //Funcion llamada para enviar a la pantalla de crearX.
 function PageCreateArticle(type){ //type can be: 'noticia', 'evento' or 'proyecto'
 	//alert ("Going to: create" + type + ".html");
-	
+
 		location.href="create" + type + ".html";
 	}
 
@@ -317,7 +317,7 @@ function editObject(type){
 	var i = getUrlParameter('objectId');
 	Parse.initialize(appId, parseKey);
 	//Parse.initialize("OuUeJlO7rkJ5sk3aQedCiBrgtnt4KqtdQJRqnnFF", "8zr7fIFKPFHZ575wbXzLcQH2LFcZVkTJzoawV03S");
-	var Evento = Parse.Object.extend("Evento");		
+	var Evento = Parse.Object.extend("Evento");
 	var query = new Parse.Query(Evento);
 	query.equalTo("objectId", i);
 	query.find({
@@ -330,7 +330,7 @@ function editObject(type){
 			$('#phone').val(object.get('telephone'));
 			$('#email').val(object.get('email'));
 			$('#link').val(object.get('link'));
-			if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)	
+			if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)
 				try{
 				latitudActual = object.get('latitude');
 				longitudActual = object.get('longitude');
@@ -356,51 +356,34 @@ function editObject(type){
 		//if (error.code = -1)
 			//alert("Error de conexi�n, verifica la conexion de internet");
 	  }
-	});	
+	});
 }
 
 function showObject(type){
 	var i = getUrlParameter('objectId');
 	Parse.initialize(appId, parseKey);
 	//Parse.initialize("OuUeJlO7rkJ5sk3aQedCiBrgtnt4KqtdQJRqnnFF", "8zr7fIFKPFHZ575wbXzLcQH2LFcZVkTJzoawV03S");
-	var Evento = Parse.Object.extend("Evento");		
+	var Evento = Parse.Object.extend("Evento");
 	var query = new Parse.Query(Evento);
 	query.equalTo("objectId", i);
 	query.find({
 		  success: function(results) {
 			var object = results[0];
-			document.getElementById("title").innerHTML = object.get('title');	
+			document.getElementById("title").innerHTML = object.get('title');
 			document.getElementById("description").innerHTML = object.get('description');
 			document.getElementById("author").innerHTML = object.get('professor');
 			document.getElementById("phone").innerHTML = object.get('telephone');
 			document.getElementById("email").innerHTML = object.get('email');
 
-			
+
 			if(object.get('link')!=""){
 				document.getElementById("url").innerHTML = document.getElementById("url").innerHTML + '<i class="ion-android-search"></i><a href="#"><label id="link">'+ object.get('link') + '</label></a>';
 			}
-			
 
-			if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)	
-				var tipoUbicacion = object.get('locationType');
-				try{
-				if(tipoUbicacion==1){
-					document.getElementById("location").innerHTML = document.getElementById("location").innerHTML + '<i class="ion-android-locate"'+'></i><label id="ubicacion">'+ object.get('location') + '</label>';
-					//document.getElementById("ubicacion").innerHTML = object.get('location');
-				}	
-				if(tipoUbicacion==2){
-					document.getElementById("location").innerHTML = document.getElementById("location").innerHTML + '<i class="ion-android-locate"'+'></i><label id="ubicacion">     Ver Mapa  </label>';
-					latitudActual = object.get('latitude');
-					longitudActual = object.get('longitude');
-					
-				}
-				
-			}
-				catch(err){
-					//DoNothing (no tiene ubicacion Guardada)
-				}
+
+			if (type==2){ //En caso de que sea evento (FALTA LO DEL MAPA)
 				var date_str = object.get('date');
-			    var fromDate = new Date(date_str);
+					var fromDate = new Date(date_str);
 				var day = fromDate.getDate();
 				if(day < 10)
 					day = "0"+day;
@@ -409,6 +392,36 @@ function showObject(type){
 					month = "0"+month;
 				var year = fromDate.getFullYear();
 				$('#date').val(year+"-"+month+"-"+day);
+				var cal = ics();
+				if (object.get('locationType')==2){
+					cal.addEvent(object.get('title'), object.get('brief_description'), object.get('location'), month+"/"+day+"/"+year, month+"/"+day+"/"+year);
+				}
+				if (object.get('locationType')==1){
+					cal.addEvent(object.get('title'), object.get('brief_description'), "Checkea el mapa en el app ", month+"/"+day+"/"+year, month+"/"+day+"/"+year);
+				}
+				else{
+					console.log("ENTRE AL ELSE DEL CALENDAR");
+					cal.addEvent(object.get('title'), object.get('brief_description'), "Ubicacion no disponible", month+"/"+day+"/"+year, month+"/"+day+"/"+year);
+				}
+				var calendarTab= '<a class="tab-item" href="javascript:cal.download(&quot;Evento&quot;)"><i class="ion-calendar"></i>	Calendario</a>';
+				document.getElementById("Tabs").innerHTML = document.getElementById("Tabs").innerHTML + calendarTab;
+				var tipoUbicacion = object.get('locationType');
+				try{
+				if(tipoUbicacion==1){
+					document.getElementById("location").innerHTML = document.getElementById("location").innerHTML + '<i class="ion-android-locate"'+'></i><label id="ubicacion">'+ object.get('location') + '</label>';
+					//document.getElementById("ubicacion").innerHTML = object.get('location');
+				}
+				if(tipoUbicacion==2){
+					document.getElementById("location").innerHTML = document.getElementById("location").innerHTML + '<i class="ion-android-locate"'+'></i><label id="ubicacion">     Ver Mapa  </label>';
+					latitudActual = object.get('latitude');
+					longitudActual = object.get('longitude');
+
+				}
+
+			}
+				catch(err){
+					//DoNothing (no tiene ubicacion Guardada)
+				}
 			}
 
 		},
@@ -417,7 +430,7 @@ function showObject(type){
 		//if (error.code = -1)
 			//alert("Error de conexi�n, verifica la conexion de internet");
 	  }
-	});	
+	});
 }
 
 function currentUser(){
@@ -436,12 +449,12 @@ function login() {
 	//Parse.User.logIn("admin", "admin");
 	Parse.User.logIn(username, password, {
 		success: function(user) {
-			alert ("Datos ingresados con exito");	
+			alert ("Datos ingresados con exito");
 			location.href='admin_index.html';
 		},
 		error: function(user, error) {
 			alert ("Revisa el usuario o contraseña.");
-			document.getElementById("password").value = "";	
+			document.getElementById("password").value = "";
 			console.log (error.message);
 			Parse.User.logOut();
 		}
@@ -457,7 +470,7 @@ function logout() {
 		toPage('index.html');
 	}
 	else{
-		alert ("Error al intentar el Logout");	
+		alert ("Error al intentar el Logout");
 	}
 }
 
@@ -485,7 +498,7 @@ function getUrlParameter(sParam) {
 
 	for (i = 0; i < sURLVariables.length; i++) {
 		sParameterName = sURLVariables[i].split('=');
-		if (sParameterName[0] === sParam) 
+		if (sParameterName[0] === sParam)
 		{
 			return sParameterName[1] === undefined ? true : sParameterName[1];
 		}
@@ -497,12 +510,12 @@ function getUrlParameter(sParam) {
 function inicializar_mapa(id) {
 		var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 		document.getElementById("mapa_div").style.width = width;
-		
+
 		if(id==0){
 			var latitudEvento = 9.854143960129555;
 			var longitudEvento = -83.90926783908691;
 			var punto = new google.maps.LatLng(latitudEvento, longitudEvento);
-			
+
 			//Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
 			var myOptions = {
 			zoom: 15, center: punto, mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -519,7 +532,7 @@ function inicializar_mapa(id) {
 			});
 
 			google.maps.event.addListener(marker, 'click', function(){
-				
+
 			markerLatLng = marker.getPosition();
 			latitud = markerLatLng.lat();
 			longitud = markerLatLng.lng();
@@ -527,7 +540,7 @@ function inicializar_mapa(id) {
 			document.getElementById("lon").innerHTML = longitud;
 
 			});
-			
+
 		}
 		else if(id==1){
 				idEvento =  getUrlParameter('objectId');
@@ -547,7 +560,7 @@ function inicializar_mapa(id) {
 				}
 				document.getElementById("lat").innerHTML = latitudEvento;
 				document.getElementById("lon").innerHTML = longitudEvento;
-				
+
 				var punto = new google.maps.LatLng(latitudEvento, longitudEvento);
 
 				//Configuramos las opciones indicando Zoom, punto(el que hemos creado) y tipo de mapa
@@ -566,7 +579,7 @@ function inicializar_mapa(id) {
 				});
 
 				google.maps.event.addListener(marker, 'click', function(){
-					
+
 				markerLatLng = marker.getPosition();
 				latitud = markerLatLng.lat();
 				longitud = markerLatLng.lng();
@@ -577,11 +590,11 @@ function inicializar_mapa(id) {
 		else{
 			//Do Nothing
 		}
-			
+
 }
 
 function save_coordinates(num){
-	
+
 	if(num==1){
 		if(typeof latitud == 'undefined' && typeof longitud == 'undefined'){
 			alert("Debe seleccionar la ubicacion deseada");
@@ -590,7 +603,7 @@ function save_coordinates(num){
 			alert('Agregado con Exito');
 			location.href='createEvento.html?lat='+latitud+'&lon='+longitud;
 		}
-		
+
 		}
 	else{
 		if(typeof latitud == 'undefined' && typeof longitud == 'undefined'){
@@ -600,12 +613,12 @@ function save_coordinates(num){
 			alert('Editado con Exito');
 			location.href='editEvento.html?objectId='+idEvento+'&lat='+latitud+'&lon='+longitud;
 		}
-		
+
 	}
-	
+
 }
 
-function createArticle(type){	
+function createArticle(type){
 	Parse.initialize(appId, parseKey);
 	var title = document.getElementById("title").value;
 	var brief_description = document.getElementById("brief_description").value;
@@ -614,7 +627,7 @@ function createArticle(type){
 	var professor = document.getElementById("author").value;
 	var email = document.getElementById("email").value;
 	var telephone = document.getElementById("phone").value;
-	
+
 	var latitudAgregar;
 	var longitudAgregar;
 
@@ -627,7 +640,7 @@ function createArticle(type){
 		var numeroLatitud = Number(latitudAgregar);
 		var numeroLongitud = Number(longitudAgregar);
 	}
-	
+
 	//Check everything is filled
 	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
 		alert("Ingrese todos los datos");
@@ -635,8 +648,8 @@ function createArticle(type){
 	else{
 		var articuloParse = Parse.Object.extend("Evento");
 		var articulo = new articuloParse();
-		 
-		articulo.set("Type",type); 
+
+		articulo.set("Type",type);
 		articulo.set("title",title);
 		articulo.set("brief_description",brief_description)
 		articulo.set("description",description);
@@ -655,10 +668,10 @@ function createArticle(type){
 			articulo.set("longitude",numeroLongitud);
 
 		}
-		
+
 		var confirmation = confirm("Seguro que desea agregar?"); //popup con dos opciones
 			if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
-				  //Guardamos el objeto en la nube 
+				  //Guardamos el objeto en la nube
 				articulo.save(null, {
 				success: function(articulo) {
 				// Execute any logic that should take place after the object is saved.
@@ -688,11 +701,11 @@ function changepriorityObject(type, i){
 		objectId = proyectoIds[i];
 	console.log(objectId);
 	Parse.initialize(appId, parseKey);
-	var Evento = Parse.Object.extend("Evento");		
+	var Evento = Parse.Object.extend("Evento");
 	var query = new Parse.Query(Evento);
 	query.equalTo("objectId", objectId);
 	query.first({
-			success: function(object) {	
+			success: function(object) {
 				var prioridad = object.get('priority');
 				console.log (prioridad);
 				object.set('priority',!prioridad);
@@ -702,7 +715,7 @@ function changepriorityObject(type, i){
 			},
 			error: function(error) {
 				alert('Error al Actualizar' + error.message);
-			}	
+			}
 	});
 }
 
@@ -713,13 +726,13 @@ function updateArticle(type){
 	var brief_description = document.getElementById("brief_description").value;
 	var description = document.getElementById("description").value;
 	var link = document.getElementById("link").value;
-	
+
 	var professor = document.getElementById("author").value;
 	var email = document.getElementById("email").value;
 	var telephone = document.getElementById("phone").value;
 	var latitudCambiar  = getUrlParameter('lat');
 	var longitudCambiar = getUrlParameter('lon');
-	
+
 
 	//Check everything is filled
 	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
@@ -727,11 +740,11 @@ function updateArticle(type){
 	}
 	else{
 		var Evento = Parse.Object.extend("Evento");
-		var query = new Parse.Query(Evento);		
-		
+		var query = new Parse.Query(Evento);
+
 		var confirmation = confirm("Seguro que desea guardar los cambios?"); //popup con dos opciones
 			if (confirmation){ //si se le da que si, entra a ejecutar el eliminar
-				  //Guardamos el objeto en la nube 
+				  //Guardamos el objeto en la nube
 				query.equalTo("objectId", i);
 				query.first({
 				  success: function(Evento) {
@@ -747,14 +760,14 @@ function updateArticle(type){
 							//Evento.set("latitude",0);
 							//Evento.set("longitude",0);
 						}
-						
+
 
 						var date_str = document.getElementById("date").value;
 						var date = new Date(date_str);
 						var tomorrow = new Date(date);
 						tomorrow.setDate(date.getDate()+1);
 						Evento.set("date",tomorrow);
-	
+
 					}
 					Evento.set("title", title);
 					Evento.set("brief_description", brief_description);
@@ -764,7 +777,7 @@ function updateArticle(type){
 					Evento.set("telephone", telephone);
 
 					Evento.save();
-					
+
 					alert('Actualizado con Exito');
 					location.href='admin_index.html';
 				  },
@@ -788,7 +801,7 @@ function eliminarUbicacion(){
 		else{
 			//Do Nothing
 		}
-	
+
 }
 
 function cambiar(number)
@@ -799,10 +812,7 @@ function cambiar(number)
 		inicializar_mapa(0);
 	}
 	else
-	{		
+	{
 		document.getElementById("loc").innerHTML = '<span class="input-label ion-compose" onclick="cambiar(1)">Ubicaci&oacute;n</span><textarea id="location" placeholder="Ubicaci&oacute;n"></textarea>';
 	}
 }
-
-
-
