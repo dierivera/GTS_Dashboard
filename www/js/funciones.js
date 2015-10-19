@@ -382,7 +382,7 @@ function showObject(type){
 			document.getElementById("compartir").innerHTML = '<a class="tab-item" onclick="share()"><i class="ion-social-twitter"></i>Twitter</a>';
 
 			if(object.get('link')!=""){
-				document.getElementById("url").innerHTML = document.getElementById("url").innerHTML + '<i class="ion-android-search"></i><a href="#"><label id="link">'+ object.get('link') + '</label></a>';
+				document.getElementById("url").innerHTML = document.getElementById("url").innerHTML + '<i class="ion-android-search"></i><a href="http//'+object.get('link')+'"><label id="link">'+ object.get('link') + '</label></a>';
 			}
 
 
@@ -659,6 +659,15 @@ function createArticle(type){
 	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
 		alert("Ingrese todos los datos");
 	}
+	else if(validarEmail(email)==false){
+		alert("Error: La dirección de correo " + email + " es incorrecta.");
+	}
+	else if(validarSiNumero(telephone)==false){
+		alert("El valor " + telephone + " no es un número.");
+	}
+	else if(link != "" && validarURL(link)==false){
+		alert("El url " + link + "tiene un formato incorrecto.");
+	}
 	else{
 		var articuloParse = Parse.Object.extend("Evento");
 		var articulo = new articuloParse();
@@ -760,6 +769,15 @@ function updateArticle(type){
 	if((title == "")||(brief_description == "")||(description == "")||(professor == "")||(email == "")||(telephone == "")){
 		alert("Ingrese todos los datos");
 	}
+	else if(validarEmail(email)==false){
+		alert("Error: La dirección de correo " + email + " es incorrecta.");
+	}
+	else if(validarSiNumero(telephone)==false){
+		alert("El valor " + telephone + " no es un número.");
+	}
+	else if(link != "" && validarURL(link)==false){
+		alert("El url " + link + "tiene un formato incorrecto.");
+	}
 	else{
 		var Evento = Parse.Object.extend("Evento");
 		var query = new Parse.Query(Evento);
@@ -843,3 +861,30 @@ function share(){
 	window.open('https://twitter.com/intent/tweet?text='+'GTS - '+twitterTitle+':'+'%0A'+twitterBrief, '_system', 'location=no');
 	//alert(twitter);
 }
+
+function validarEmail( email ) {
+    expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if ( !expr.test(email) )
+        return false;
+	else{
+		return true;
+	}
+}
+
+function validarSiNumero(numero){
+    if (!/^([0-9])*$/.test(numero))
+		return false;
+      
+	else
+		return true;
+ }
+ 
+function validarURL(paginaWeb){
+	patron = /^www.\w+.\w+$/gi;
+	if (!patron.test(paginaWeb))
+		return false;
+	else
+		return true;
+	  //aquí tu código
+}
+
