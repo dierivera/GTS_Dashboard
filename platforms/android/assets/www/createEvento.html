@@ -24,7 +24,7 @@
 		</script>
         <title>GTS Dashboard</title>
     </head>
-    <body onload="newEvent()">			
+    <body>			
 		<div class="bar bar-header bar-positive">
 			<button class="button button-icon icon ion-chevron-left" onclick="toPage('admin_index.html')">Back</button>
 			<h1 class="title">GTS Dashboard</h1>
@@ -59,7 +59,8 @@
 			</label>
 			
 			<label id="loc" class="item item-input item-stacked-label">
-				<span class="input-label ion-compose" onclick="cambiar(1)">Ubicaci&oacute;n</span>				
+				<span class="input-label">Ubicaci&oacute;n</span>
+				<i class="icon ion-compose" onclick="cambiar(1,1)"></i>				
 				<textarea id="location" placeholder="Ubicaci&oacute;n"></textarea>
 			</label>
 			
@@ -93,9 +94,6 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
 		<script src="js/bootstrap.min.js"></script>
-        <script type="text/javascript">
-            app.initialize();
-        </script>
 		<script src="cordova.js"></script>
 		
     </body>

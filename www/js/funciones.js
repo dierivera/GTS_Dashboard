@@ -515,7 +515,6 @@ function getUrlParameter(sParam) {
 function inicializar_mapa(id) {
 		var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 		document.getElementById("mapa_div").style.width = width;
-
 		if(id==0){
 			var latitudEvento = 9.854143960129555;
 			var longitudEvento = -83.90926783908691;
@@ -541,13 +540,15 @@ function inicializar_mapa(id) {
 			markerLatLng = marker.getPosition();
 			latitud = markerLatLng.lat();
 			longitud = markerLatLng.lng();
-			document.getElementById("lat").innerHTML = latitud;
-			document.getElementById("lon").innerHTML = longitud;
-
+			
+			document.getElementById("lat").value = latitud;
+			document.getElementById("lon").value = longitud;
+			
 			});
 
 		}
 		else if(id==1){
+				var punto = new google.maps.LatLng(latitud, longitud);
 				idEvento =  getUrlParameter('objectId');
 				latitudEvento =  getUrlParameter('lat');
 				longitudEvento =  getUrlParameter('lon');
@@ -588,14 +589,11 @@ function inicializar_mapa(id) {
 				markerLatLng = marker.getPosition();
 				latitud = markerLatLng.lat();
 				longitud = markerLatLng.lng();
-				document.getElementById("lat").innerHTML = latitud;
-				document.getElementById("lon").innerHTML = longitud;
-				});
+				});			
 		}
 		else{
 			//Do Nothing
 		}
-
 }
 
 function save_coordinates(num){
@@ -632,18 +630,29 @@ function createArticle(type){
 	var professor = document.getElementById("author").value;
 	var email = document.getElementById("email").value;
 	var telephone = document.getElementById("phone").value;
+	var localizacion;
 
 	var latitudAgregar;
 	var longitudAgregar;
+	var numeroLatitud;
+	var numeroLongitud;
 
 	var date_str;
 	//FALTAN LOS DEL EVENTO (el mapa)
 	if (type==2){
 		date_str = document.getElementById("date").value;
-		latitudAgregar = getUrlParameter('lat');
-		longitudAgregar = getUrlParameter('lon');
-		var numeroLatitud = Number(latitudAgregar);
-		var numeroLongitud = Number(longitudAgregar);
+		
+		if(tipoEvento == 2)
+		{
+			latitudAgregar = latitud;
+			longitudAgregar = longitud;
+			numeroLatitud = Number(latitudAgregar);
+			numeroLongitud = Number(longitudAgregar);
+		}
+		else
+		{
+			localizacion = document.getElementById("location").value;
+		}		
 	}
 
 	//Check everything is filled
@@ -669,9 +678,18 @@ function createArticle(type){
 			var tomorrow = new Date(date);
 			tomorrow.setDate(date.getDate()+1);
 			articulo.set("date",tomorrow);
-			articulo.set("latitude",numeroLatitud);
-			articulo.set("longitude",numeroLongitud);
-
+			
+			if(tipoEvento == 2)
+			{
+				articulo.set("locationType",2)
+				articulo.set("latitude",numeroLatitud);
+				articulo.set("longitude",numeroLongitud);
+			}
+			else
+			{
+				articulo.set("locationType",1)
+				articulo.set("location",localizacion);
+			}
 		}
 
 		var confirmation = confirm("Seguro que desea agregar?"); //popup con dos opciones
@@ -680,7 +698,6 @@ function createArticle(type){
 				articulo.save(null, {
 				success: function(articulo) {
 				// Execute any logic that should take place after the object is saved.
-				alert('Agregado con Exito');
 				location.href='admin_index.html';
 				},
 				error: function(articulo, error) {

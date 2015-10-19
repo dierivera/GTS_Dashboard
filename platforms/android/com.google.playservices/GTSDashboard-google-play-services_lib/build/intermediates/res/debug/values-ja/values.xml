@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- From: file:/C:/Users/josue/Documents/GitHub/GTS_Dashboard/platforms/android/com.google.playservices/GTSDashboard-google-play-services_lib/res/values-ja/common_strings.xml -->
+    <!-- From: file:/C:/Users/SirIsaac/Desktop/TEC/Proyecto/ProyecTEC/GTS_Dashboard/platforms/android/com.google.playservices/GTSDashboard-google-play-services_lib/res/values-ja/common_strings.xml -->
     <eat-comment/>
     <string msgid="4181637455539816337" name="common_google_play_services_enable_button">"Play開発者サービスの有効化"</string>
     <string msgid="7627896071867667758" name="common_google_play_services_enable_text">"このアプリの実行には、Google Play開発者サービスの有効化が必要です。"</string>
