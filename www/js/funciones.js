@@ -384,7 +384,7 @@ function showObject(type){
 			twitterBrief = object.get('brief_description');
 			document.getElementById("telefono").innerHTML = '<i class="icon ion-ios-telephone"></i><a href="tel:'+object.get('telephone')+'"><label> '+object.get('telephone')+'</label></a>';
 			document.getElementById("correo").innerHTML = '<i class="icon ion-ios-email"></i><a href="mailto:'+object.get('email')+'"><label> '+object.get('email')+'</label></a>';
-			document.getElementById("compartir").innerHTML = '<a class="tab-item" onclick="share()"><i class="ion-social-twitter"></i>Twitter</a>';
+			document.getElementById("Tabs").innerHTML = '<a class="tab-item" onclick="share()"><i class="ion-social-twitter"></i>Twitter</a>';
 
 			if(object.get('link')!=""){
 				document.getElementById("url").innerHTML = document.getElementById("url").innerHTML + '<i class="ion-android-search"></i><a href="http//'+object.get('link')+'"><label id="link">'+ object.get('link') + '</label></a>';
