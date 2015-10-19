@@ -5,6 +5,9 @@ var importantLimit = 10; //cantidad maxima de noticias cargadas en la pantalla p
 var noticiaIds = [];
 var eventoIds = [];
 var proyectoIds = [];
+var resultadosIds = [];
+//Para calendarizar eventos;
+var calendar = [];
 
 var latitudEvento = 9.854143960129555;
 var longitudEvento = -83.90926783908691;
@@ -163,14 +166,13 @@ function loadAdminArticles(type, contentDiv) {
 				else{
 					favorito = '<a class="tab-item" onclick="return changepriorityObject('+type + "," + i +');"><i class="icon ion-android-star-outline"></i>Favorito</a>';
 				}
-				var difundir = '<a class="tab-item" href="#"><i class="icon ion-android-notifications"></i> Difundir </a>';
 				var site = 'toEditPage('+ i +","+ type +');';
 				//console.log(site);
 				var editar = '<a class="tab-item" onclick="return '+ site +'"><i class="icon ion-edit"></i> Editar</a>';
 				var eliminar = '<a class="tab-item" onclick="return deleteObject('+type + "," + i +');"><i class="icon ion-android-delete" ></i> Eliminar</a>';
 				//var eliminarUbicacion = '<a class="tab-item" onclick="return deleteObject('+type + "," + i +');"><i class="icon ion-android-close" ></i> Eliminar Ubicacion</a>';
 				//console.log('return deleteObject('+ i +')');
-				document.getElementById(contentDiv).innerHTML = document.getElementById(contentDiv).innerHTML + '<div class="card"> <div class="item item-text-wrap">' + object.get('title') + '<div class="item tabs tabs-secondary tabs-icon-left">' + favorito + difundir + editar + eliminar + '</div></div></div>';
+				document.getElementById(contentDiv).innerHTML = document.getElementById(contentDiv).innerHTML + '<div class="card"> <div class="item item-text-wrap">' + object.get('title') + '<div class="item tabs tabs-secondary tabs-icon-left">' + favorito + editar + eliminar + '</div></div></div>';
 				}
 		  },
 		  error: function(error) {
@@ -243,6 +245,9 @@ function toShowPage(i,type){
 	if (type == 3){
 		objectId = proyectoIds[i];
 		location.href='viewProyecto.html?objectId=' + objectId;}
+	if (type == 4){ //para el search
+		objectId = resultadosIds[i];
+		location.href='viewNoticia.html?objectId=' + objectId;}
 }
 
 
@@ -397,18 +402,9 @@ function showObject(type){
 					month = "0"+month;
 				var year = fromDate.getFullYear();
 				$('#date').val(year+"-"+month+"-"+day);
-				var cal = ics();
-				if (object.get('locationType')==2){
-					cal.addEvent(object.get('title'), object.get('brief_description'), object.get('location'), month+"/"+day+"/"+year, month+"/"+day+"/"+year);
-				}
-				if (object.get('locationType')==1){
-					cal.addEvent(object.get('title'), object.get('brief_description'), "Checkea el mapa en el app ", month+"/"+day+"/"+year, month+"/"+day+"/"+year);
-				}
-				else{
-					console.log("ENTRE AL ELSE DEL CALENDAR");
-					cal.addEvent(object.get('title'), object.get('brief_description'), "Ubicacion no disponible", month+"/"+day+"/"+year, month+"/"+day+"/"+year);
-				}
-				var calendarTab= '<a class="tab-item" href="javascript:cal.download(&quot;Evento&quot;)"><i class="ion-calendar"></i>	Calendario</a>';
+				var calendarTab;
+				calendar[0] = i;
+				calendarTab= '<a class="tab-item" href="javascript:calendarizar();' + '"><i class="ion-calendar"></i>	Calendario</a>';
 				document.getElementById("Tabs").innerHTML = document.getElementById("Tabs").innerHTML + calendarTab;
 				var tipoUbicacion = object.get('locationType');
 				try{
@@ -437,6 +433,72 @@ function showObject(type){
 	  }
 	});
 }
+
+function calendarizar(){
+	var i = calendar[0];
+	Parse.initialize(appId, parseKey);
+	//Parse.initialize("OuUeJlO7rkJ5sk3aQedCiBrgtnt4KqtdQJRqnnFF", "8zr7fIFKPFHZ575wbXzLcQH2LFcZVkTJzoawV03S");
+	console.log(i);
+	var Evento = Parse.Object.extend("Evento");
+	var query = new Parse.Query(Evento);
+	query.equalTo("objectId", i);
+	query.find({
+		  success: function(results) {
+			var object = results[0];
+			//Toma los datos de la fecha
+			var date_str = object.get('date');
+				var fromDate = new Date(date_str);
+			var day = fromDate.getDate();
+			if(day < 10)
+				day = "0"+day;
+			var month = fromDate.getMonth() + 1; //Months are zero based
+			if(month < 10)
+				month = "0"+month;
+			var year = fromDate.getFullYear();
+			//Finaliza la toma de los datos de la fecha
+		  var start = day+"-"+month+"-"+year;
+			var cal = ics();
+			cal.addEvent(object.get('title'), object.get('description'),object.get('location'),start,start);
+			cal.download('Evento');
+		},
+	  error: function(error) {
+	  }
+	});
+
+}
+
+function search(){
+		toPage('search.html');
+}
+
+function SearchContent(){
+	document.getElementById("SearchResults").innerHTML = '<p></p>'; //para no acumular resultados
+	resultadosIds = [];
+	var busqueda = document.getElementById("contentToSearch").value;  //texto a buscar
+	//console.log(busqueda);
+	Parse.initialize(appId, parseKey);
+	var Evento = Parse.Object.extend("Evento");
+	var query = new Parse.Query(Evento);
+	query.contains("title", busqueda); //busca que el titulo contenga el texto a buscar
+	query.descending("updatedAt");  //las ordena de mas nuevas a viejas
+	query.limit(importantLimit);  //filtra a que sean solo 10 resultados
+		query.find({
+		  success: function(results) {
+				for (i =0; i < results.length;i++){ //itera por los resultados
+					var object = results[i];
+					resultadosIds[i] = object.id;
+					//console.log(object.get('title'));
+					var funcion = '"toShowPage('+ i +","+ "4" +');"';
+					var date = '</a><div class="item item-divider"><div class="item item-divider">'+   moment(object.updatedAt).format('MMMM Do YYYY, h:mm:ss a')+ '</div>';
+					document.getElementById("SearchResults").innerHTML = document.getElementById("SearchResults").innerHTML + '<div class="card"> <a class="item item-divider" href="#" onclick='+funcion+'>'+ geticon(true) + " " +object.get('title') + '</a><a class="item item-text-wrap"  href="#" onclick='+funcion+'>'+object.get('brief_description')+  date +' </div></div>';
+				}
+			},
+			error: function(error) {
+				alert('Error de Busqueda' + error.message);
+			}
+		});
+	}
+
 
 function currentUser(){
 	if (Parse.User.current()){
@@ -540,10 +602,10 @@ function inicializar_mapa(id) {
 			markerLatLng = marker.getPosition();
 			latitud = markerLatLng.lat();
 			longitud = markerLatLng.lng();
-			
+
 			document.getElementById("lat").value = latitud;
 			document.getElementById("lon").value = longitud;
-			
+
 			});
 
 		}
@@ -589,7 +651,7 @@ function inicializar_mapa(id) {
 				markerLatLng = marker.getPosition();
 				latitud = markerLatLng.lat();
 				longitud = markerLatLng.lng();
-				});			
+				});
 		}
 		else{
 			//Do Nothing
@@ -641,7 +703,7 @@ function createArticle(type){
 	//FALTAN LOS DEL EVENTO (el mapa)
 	if (type==2){
 		date_str = document.getElementById("date").value;
-		
+
 		if(tipoEvento == 2)
 		{
 			latitudAgregar = latitud;
@@ -652,7 +714,7 @@ function createArticle(type){
 		else
 		{
 			localizacion = document.getElementById("location").value;
-		}		
+		}
 	}
 
 	//Check everything is filled
@@ -687,7 +749,7 @@ function createArticle(type){
 			var tomorrow = new Date(date);
 			tomorrow.setDate(date.getDate()+1);
 			articulo.set("date",tomorrow);
-			
+
 			if(tipoEvento == 2)
 			{
 				articulo.set("locationType",2)
@@ -874,11 +936,11 @@ function validarEmail( email ) {
 function validarSiNumero(numero){
     if (!/^([0-9])*$/.test(numero))
 		return false;
-      
+
 	else
 		return true;
  }
- 
+
 function validarURL(paginaWeb){
 	patron = /^www.\w+.\w+$/gi;
 	if (!patron.test(paginaWeb))
@@ -887,4 +949,3 @@ function validarURL(paginaWeb){
 		return true;
 	  //aquí tu código
 }
-
