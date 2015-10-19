@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<title></title>
+
+		<link href="lib/ionic/css/ionic.css" rel="stylesheet">
+		<link href="css/style.css" rel="stylesheet">
+		<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+		<!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+		-->
+		<link href="css/ionic.app.css" rel="stylesheet">
+		<!-- ionic/angularjs js -->
+		<script src="lib/ionic/js/ionic.bundle.js"></script>
+
+		<!-- cordova script (this will be a 404 during development) -->
+		<script src="cordova.js"></script>
+
+		<!-- your app's js -->
+		<script src="js/app.js"></script>
+
+		<script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.0.23.min.js"></script>
+			<script language="javascript" type="text/javascript" src="js/funciones.js"></script>
+			<script language="javascript" type="text/javascript" src="js/moment.js"></script>
+      <script language="javascript" type="text/javascript" src="js/ics.js"></script>
+			<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+			<script type="text/javascript" src="sencha-touch-debug.js"></script>
+			<title>GTS Dashboard</title>
+    </head>
+    <body>
+
+<ion-pane>
+
+		<div class="bar bar-header bar-positive has-tabs-top">
+      <button class="button button-icon icon ion-chevron-left" onclick="toPage('index.html')">Back</button>
+			<h1 class="title">GTS Dashboard</h1>
+		</div>
+
+
+
+	<ion-content class="has-header">
+			<li class="item">
+				Hidden text
+			</li>
+
+    <div class="list">
+
+  <div class="item item-input-inset">
+    <label class="item-input-wrapper">
+      <input id="contentToSearch" type="text" placeholder="Estoy buscando...">
+    </label>
+    <button class="button button-small" onclick="SearchContent()">
+      Buscar!
+    </button>
+  </div>
+
+</div>
+
+		<div id="SearchResults" class="list">
+		</div>
+	</ion-content>
+
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+	</ion-pane>
+    </body>
+</html>
